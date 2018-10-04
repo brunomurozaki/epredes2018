@@ -23,13 +23,7 @@ public class Mesa implements Runnable {
 	private static final int MAIOR = 1, MENOR = -1, MELOU = 0;
 	private static Chat chat;
 
-	public Mesa(Chat chat) {
-
-		// jogadores mockados
-		Jogador jogador1 = new Jogador("Jogador 1");
-		Jogador jogador2 = new Jogador("Jogador 2");
-		Jogador jogador3 = new Jogador("Jogador 3");
-		Jogador jogador4 = new Jogador("Jogador 4");
+	public Mesa(Chat chat, Jogador jogador1, Jogador jogador2, Jogador jogador3, Jogador jogador4) {
 
 		jogadores = new LinkedList<>();
 		jogadores.add(jogador1);
