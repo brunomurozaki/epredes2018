@@ -1,7 +1,5 @@
 package controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -9,7 +7,6 @@ import java.util.Queue;
 import model.Baralho;
 import model.Carta;
 import model.Jogador;
-import util.CompararCartas;
 
 public class Mesa implements Runnable {
 
