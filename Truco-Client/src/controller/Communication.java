@@ -8,11 +8,14 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import util.Messages;
+
 public class Communication {
 
 	private Socket socket;
 	private BufferedReader reader;
 	private PrintWriter writer;
+	private static Communication instance;
 	
 	private Thread receiveThread = null;
 	
@@ -31,10 +34,20 @@ public class Communication {
 		writer.flush();
 	}
 	
+	public static Communication getInstance() throws UnknownHostException, IOException {
+		if(instance == null) {
+			instance = new Communication();
+		}
+		return instance;
+	}
+	
 	// Encerra a thread de recebimento de mensagem
 	public void stopCommunication() {
+		sendMessage(Messages.DISCONNECT);
 		isRunning = false;
 	}
+	
+	
 	
 	private void startListeningMessages() {
 

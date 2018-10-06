@@ -3,6 +3,7 @@ package misc;
 import java.io.IOException;
 import java.util.Scanner;
 
+import controller.Client;
 import controller.Server;
 
 public class Main {
@@ -23,6 +24,9 @@ public class Main {
 				if(code.equals("start")) {
 					Server srv = Server.getInstance();
 					srv.startServer();
+					
+				} else if(code.equals("list")) {
+					System.out.println("Temos um total de " + Server.getInstance().getClientList().size() + " clientes conectados");
 				} else if(code.equals("end")) {
 					keepAlive = false;
 					Server.getInstance().stopServer();

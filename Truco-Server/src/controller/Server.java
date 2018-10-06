@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.channels.ClosedByInterruptException;
 import java.util.ArrayList;
-
-import model.Client;
 
 public class Server {
 
@@ -21,21 +20,13 @@ public class Server {
 		clientList = new ArrayList<Client>();
 	}
 	
-	public void stopServer() {
+	public void stopServer() throws IOException {
+		for(int i = 0; i < clientList.size(); i++) {
+			clientList.get(i).endClient(true);
+		}
+		
 		keepAlive = false;
-	}
-	
-	public void removeClient(Client client) {
-		if(!this.clientList.remove(client)) {
-			System.err.println("Cliente nao existia na lista");
-		}
-	}
-	
-	public static Server getInstance() throws IOException {
-		if(instance == null) {
-			instance = new Server();
-		}
-		return instance;
+		serverSocket.close();
 	}
 	
 	public void startServer() throws IOException {
@@ -68,12 +59,29 @@ public class Server {
 						clientThread.start();
 					}
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("Server será encerrado");
 				}
 			}
 		};
 		
 		acceptThread.start();
+	}
+	
+	
+	public ArrayList<Client> getClientList() {
+		return clientList;
+	}
+	
+	public void removeClient(Client client) {
+		if(!this.clientList.remove(client)) {
+			System.err.println("Cliente nao existia na lista");
+		}
+	}
+	
+	public static Server getInstance() throws IOException {
+		if(instance == null) {
+			instance = new Server();
+		}
+		return instance;
 	}
 }

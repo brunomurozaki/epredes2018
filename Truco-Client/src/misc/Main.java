@@ -17,17 +17,17 @@ public class Main {
 			
 			Scanner sc = new Scanner(System.in);
 			String code = "";
-			Communication comm = null;
 			
 			while(isRunning) {
 				code = sc.nextLine();
 			
 				if(code.equals("end")) {
+					Communication.getInstance().stopCommunication();
 					isRunning = false;
 				} else if (code.equals("connect")) {
-					comm = new Communication();
+					Communication.getInstance();
 				} else {
-					comm.sendMessage(code);
+					Communication.getInstance().sendMessage(code);
 				}
 			}
 			
