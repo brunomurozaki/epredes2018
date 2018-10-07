@@ -29,16 +29,16 @@ public class Communication {
 		startListeningMessages();
 	}
 	
+	// Envio mensagem de insercao de usuario no server
+	public void registerUser(String name) {
+		sendMessage(Messages.INSERT);
+		sendMessage(name);
+	}
+
+	// Envio uma mensagem qualquer ao server
 	public void sendMessage(String message) {
 		writer.println(message);
 		writer.flush();
-	}
-	
-	public static Communication getInstance() throws UnknownHostException, IOException {
-		if(instance == null) {
-			instance = new Communication();
-		}
-		return instance;
 	}
 	
 	// Encerra a thread de recebimento de mensagem
@@ -46,8 +46,6 @@ public class Communication {
 		sendMessage(Messages.DISCONNECT);
 		isRunning = false;
 	}
-	
-	
 	
 	private void startListeningMessages() {
 
@@ -63,6 +61,18 @@ public class Communication {
 				try {
 					while(isRunning) {
 						String message = reader.readLine();
+						
+						if(message.equals(Messages.INSERT)) {
+							String res = reader.readLine();
+							if(res.equals(Messages.ACK)) {
+								System.out.println("Insercao feita com sucesso!");
+							} else if(res.equals(Messages.NOK)) {
+								System.out.println("Falha na insercao. Nome ja utilizado");
+							} else {
+								System.err.println("Protocolo invalido!");
+							}
+						}
+						
 						System.out.println(message);
 					}
 					
@@ -72,5 +82,15 @@ public class Communication {
 				}
 			}
 		};
+		
+		receiveThread.start();
 	}
+	
+	public static Communication getInstance() throws UnknownHostException, IOException {
+		if(instance == null) {
+			instance = new Communication();
+		}
+		return instance;
+	}
+	
 }

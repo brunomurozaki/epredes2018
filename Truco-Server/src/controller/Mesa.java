@@ -20,20 +20,9 @@ public class Mesa implements Runnable {
 	private static final int MAIOR = 1, MENOR = -1, MELOU = 0;
 	private static Chat chat;
 
-	public Mesa(Chat chat, Jogador jogador1, Jogador jogador2, Jogador jogador3, Jogador jogador4) {
-
+	public Mesa(Chat chat) {
 		jogadores = new LinkedList<>();
-		jogadores.add(jogador1);
-		jogadores.add(jogador2);
-		jogadores.add(jogador3);
-		jogadores.add(jogador4);
-
 		jogadorPorTime = new HashMap<>();
-		jogadorPorTime.put(jogador1, TIME1);
-		jogadorPorTime.put(jogador2, TIME2);
-		jogadorPorTime.put(jogador3, TIME1);
-		jogadorPorTime.put(jogador4, TIME2);
-
 		mao = 0;
 	}
 

@@ -26,8 +26,10 @@ public class Main {
 					isRunning = false;
 				} else if (code.equals("connect")) {
 					Communication.getInstance();
+				} else if(code.equals("register")) {
+					Communication.getInstance().registerUser(sc.nextLine());
 				} else {
-					Communication.getInstance().sendMessage(code);
+					//Communication.getInstance().sendMessage(code);
 				}
 			}
 			

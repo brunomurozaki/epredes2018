@@ -12,17 +12,12 @@ public class Messages {
 	public final static String CHAT = "chat";
 	public final static String STATUS = "status";
 	
-/*	Entrar em uma sala (TCP)
-	Lista de salas? (UDP)
-	Jogo
-	Tempo da jogada (UDP)
-	Ação de jogo (TCP)*/
-	
 	public final static String ROOM = "room";
 	public final static String ROOMLIST = "roomlist";
 	public final static String TIME = "time";
 	public final static String PLAY = "play";
 	
-
+	public final static String ACK = "ack";
+	public final static String NOK = "nok";
 	
 }
