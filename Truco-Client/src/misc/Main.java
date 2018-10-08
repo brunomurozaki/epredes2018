@@ -3,6 +3,7 @@ package misc;
 import java.io.IOException;
 import java.util.Scanner;
 
+import controller.ApplicationController;
 import controller.Communication;
 
 public class Main {
@@ -10,9 +11,10 @@ public class Main {
 	private static boolean isRunning = true;
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
-		try {
+		ApplicationController.getInstance().startApp();
+
+		/*try {
 			System.out.println("Start program: ");
 			
 			Scanner sc = new Scanner(System.in);
@@ -37,7 +39,7 @@ public class Main {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 }

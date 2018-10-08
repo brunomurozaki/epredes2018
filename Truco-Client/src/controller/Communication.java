@@ -66,9 +66,9 @@ public class Communication {
 						if(message.equals(Messages.INSERT)) {
 							String res = reader.readLine();
 							if(res.equals(Messages.ACK)) {
-								System.out.println("Insercao feita com sucesso!");
+								ApplicationController.getInstance().successfulLogin();
 							} else if(res.equals(Messages.NOK)) {
-								System.out.println("Falha na insercao. Nome ja utilizado");
+								ApplicationController.getInstance().failedLogin();
 							} else {
 								System.err.println("Protocolo invalido!");
 							}

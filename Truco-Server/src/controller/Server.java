@@ -91,9 +91,9 @@ public class Server {
 	
 	
 	// Remove o client da lista de sockets e da lista de registro
-	public void removeClient(Client client) {
+	public void removeClient(Client client) throws IOException {
 		if(!this.clientList.remove(client)) {
-			System.err.println("Cliente nao existia na lista");
+			ApplicationController.getInstance().logData("Cliente nao existia na lista");
 		}
 		
 		Set<String> keys = clientMap.keySet();

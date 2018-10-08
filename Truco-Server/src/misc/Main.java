@@ -1,12 +1,8 @@
 package misc;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 import controller.ApplicationController;
-import controller.Client;
-import controller.Server;
-import view.MainWindow;
 
 public class Main {
 
