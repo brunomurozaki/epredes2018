@@ -47,6 +47,7 @@ public class Communication {
 		isRunning = false;
 	}
 	
+	// Escuta as mensagens vindas do servidor
 	private void startListeningMessages() {
 
 		if(receiveThread != null) {

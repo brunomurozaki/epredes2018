@@ -17,7 +17,7 @@ public class Client implements Runnable {
 	private BufferedReader reader;
 	private boolean isRunning = true;
 
-	
+	// Cuida de toda a comunicacao entre o servidor e o cliente. Cada accept gera uma nova instancia dessa classe
 	public Client(Socket clientSocket) throws IOException {
 		this.clientSocket = clientSocket;
 		this.writer = new PrintWriter(this.clientSocket.getOutputStream());

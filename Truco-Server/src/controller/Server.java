@@ -45,15 +45,15 @@ public class Server {
 	}
 	
 	// Inicia o servidor e a thread de accept (nao eh a thread de mensagens do cliente)
-	public void startServer() throws IOException {
+	public boolean startServer() throws IOException {
 	
 		if(acceptThread != null) {
-			System.err.println("Thread de accept já iniciada");
-			return;
+			ApplicationController.getInstance().logData("Thread de accept já iniciada");
+			return false;
 		}
 	
 		serverSocket.bind(new InetSocketAddress("127.0.0.1", 6789));
-		System.out.println("Socket binded!");
+		ApplicationController.getInstance().logData("Socket binded!");
 		
 		acceptThread = new Thread("Accpet Thread") {
 			@Override
@@ -65,7 +65,7 @@ public class Server {
 					// Recebo a nova conexao e instancio o novo client
 					while(keepAlive) {
 						Socket clientSock = serverSocket.accept();
-						System.out.println("Client Accepted!");
+						ApplicationController.getInstance().logData("Client Accepted!");
 						
 						Client client = new Client(clientSock);
 						clientList.add(client);
@@ -75,12 +75,18 @@ public class Server {
 						clientThread.start();
 					}
 				} catch (IOException e) {
-					System.out.println("Server será encerrado");
+					try {
+						ApplicationController.getInstance().logData("Server será encerrado");
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		};
 		
 		acceptThread.start();
+		return true;
 	}
 	
 	
