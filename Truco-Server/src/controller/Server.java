@@ -4,24 +4,28 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.channels.ClosedByInterruptException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+
+import model.Jogador;
 
 public class Server {
 
 	private ServerSocket serverSocket;
 	private ArrayList<Client> clientList;
+	private ArrayList<Jogador> jogadorList;
 	private HashMap<String, Client> clientMap;
 	private Thread acceptThread = null;
 	private static Server instance;
 	private boolean keepAlive = true;
+	private int contador = 0;
 	
 	public Server() throws IOException {
 		serverSocket = new ServerSocket();
 		clientList = new ArrayList<Client>();
 		clientMap = new HashMap<String, Client>();
+		jogadorList = new ArrayList<Jogador>();
 	}
 	
 	// Encerra o servidor e todas as suas threads
@@ -55,7 +59,7 @@ public class Server {
 		serverSocket.bind(new InetSocketAddress("127.0.0.1", 6789));
 		ApplicationController.getInstance().logData("Socket binded!");
 		
-		acceptThread = new Thread("Accpet Thread") {
+		acceptThread = new Thread("Accept Thread") {
 			@Override
 			public void run() {
 				super.run();
@@ -73,6 +77,15 @@ public class Server {
 						// Inicio a nova thread do cliente separadamente
 						Thread clientThread = new Thread(client);
 						clientThread.start();
+						
+						// Se 4 jogadores se registrarem, começar uma thread de Chat e de Mesa
+						if(jogadorList.size() == 4){
+							
+							ApplicationController.getInstance().logData("4 players connected.");
+							broadcastEspera("Partida iniciando...");
+							
+							jogadorList.clear();
+						}
 					}
 				} catch (IOException e) {
 					try {
@@ -106,6 +119,12 @@ public class Server {
 		}
 	}
 	
+	public void broadcastEspera(String msg){
+		for(Jogador jogador : jogadorList){
+			jogador.getClient().sendMessage(msg);
+		}
+	}
+	
 
 	public ArrayList<Client> getClientList() {
 		return clientList;
@@ -117,5 +136,13 @@ public class Server {
 			instance = new Server();
 		}
 		return instance;
+	}
+	
+	public ArrayList<Jogador> getJogadorList(){
+		return jogadorList;
+	}
+	
+	public void addJogador(Jogador jogador){
+		jogadorList.add(jogador);
 	}
 }

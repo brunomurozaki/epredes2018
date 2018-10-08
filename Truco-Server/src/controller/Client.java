@@ -8,6 +8,7 @@ import java.net.Socket;
 
 import javax.xml.ws.handler.MessageContext;
 
+import model.Jogador;
 import util.Messages;
 
 public class Client implements Runnable {
@@ -57,8 +58,13 @@ public class Client implements Runnable {
 					String name = reader.readLine();
 					System.out.println("Nome: " + name);
 					sendMessage(Messages.INSERT);
+					// Se o cliente foi registrado no ClientMap com sucesso
 					if(Server.getInstance().registerClient(name, this)) {
 						sendMessage(Messages.ACK);
+						// Adicione ele à lista de jogadores em espera
+						Server.getInstance().addJogador(new Jogador(name, this));
+						ApplicationController.getInstance().logData(name + " registered. Now waiting " + (4-Server.getInstance().getJogadorList().size()) + " players.");
+						Server.getInstance().broadcastEspera("Esperando " + (4-Server.getInstance().getJogadorList().size()) + " jogadores se conectarem.");
 					} else {
 						sendMessage(Messages.NOK);
 					}

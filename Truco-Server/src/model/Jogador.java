@@ -5,20 +5,19 @@ import java.io.DataOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import controller.Client;
+
 public class Jogador {
 
 	private String nome;
 	private ArrayList<Carta> cartas;
-	private Socket socket;
-	private DataOutputStream outToClient;
-	private BufferedReader inFromCliente;
+	private Client client;
 
-	public Jogador(String nome, Socket socket, DataOutputStream outToClient, BufferedReader inFromClient) {
+	public Jogador(String nome, Client client) {
 
 		this.nome = nome;
 		cartas = new ArrayList<>();
-		this.outToClient = outToClient;
-		this.inFromCliente = inFromClient;
+		this.client = client;
 	}
 
 	public void recebeCarta(Carta carta) {
@@ -53,27 +52,11 @@ public class Jogador {
 		cartas.clear();
 	}
 
-	public Socket getSocket() {
-		return socket;
+	public Client getClient() {
+		return client;
 	}
 
-	public void setSocket(Socket socket) {
-		this.socket = socket;
-	}
-
-	public DataOutputStream getOutToClient() {
-		return outToClient;
-	}
-
-	public void setOutToClient(DataOutputStream outToClient) {
-		this.outToClient = outToClient;
-	}
-
-	public BufferedReader getInFromCliente() {
-		return inFromCliente;
-	}
-
-	public void setInFromCliente(BufferedReader inFromCliente) {
-		this.inFromCliente = inFromCliente;
+	public void setClient(Client client) {
+		this.client = client;
 	}
 }

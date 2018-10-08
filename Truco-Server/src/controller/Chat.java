@@ -6,12 +6,12 @@ public class Chat implements Runnable {
 
 	public void mensagemSistema(String mensagem) {
 
-		System.out.println("Mensagem do Sistema: " + mensagem);
+		System.out.println("Sistema: " + mensagem);
 	}
 
 	public void mensagemJogador(Jogador jogador, String mensagem) {
 
-		System.out.println("Mensagem de " + jogador.getNome() + ": " + mensagem);
+		System.out.println(jogador.getNome() + ": " + mensagem);
 	}
 
 	@Override
