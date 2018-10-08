@@ -5,18 +5,26 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 
 import view.LoginWindow;
+import view.MainWindow;
 
 public class ApplicationController {
 
 	private static ApplicationController instance;
-	
+	private LoginWindow loginWindow;
+	private MainWindow mainWindow;
 	
 	public ApplicationController() {
-		// TODO Auto-generated constructor stub
+		loginWindow = new LoginWindow();
+		mainWindow = new MainWindow();
+	}
+	
+	public void startMainWindow() {
+		loginWindow.hideWindow();
+		mainWindow.showWindow();
 	}
 	
 	public void startApp() {
-		new LoginWindow().setVisible(true);
+		loginWindow.showWindow();
 	}
 	
 	public void failedLogin() {
@@ -24,7 +32,7 @@ public class ApplicationController {
 	}
 	
 	public void successfulLogin() {
-		JOptionPane.showMessageDialog(null, "Login realizado com sucesso", "Login", JOptionPane.INFORMATION_MESSAGE);
+		startMainWindow();
 	}
 	
 	public void login(String name) {

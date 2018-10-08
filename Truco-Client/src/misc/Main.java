@@ -13,7 +13,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		ApplicationController.getInstance().startApp();
-
+		//ApplicationController.getInstance().startMainWindow();
 		/*try {
 			System.out.println("Start program: ");
 			

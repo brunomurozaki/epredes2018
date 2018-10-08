@@ -65,6 +65,14 @@ public class LoginWindow extends JFrame{
 		
 	}
 	
+	public void showWindow() {
+		this.setVisible(true);
+	}
+	
+	public void hideWindow() {
+		this.setVisible(false);
+	}
+	
 	private void initializeEvents() {
 		
 		// Window events
