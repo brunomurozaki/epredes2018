@@ -63,8 +63,25 @@ public class Client implements Runnable {
 						sendMessage(Messages.ACK);
 						// Adicione ele à lista de jogadores em espera
 						Server.getInstance().addJogador(new Jogador(name, this));
-						ApplicationController.getInstance().logData(name + " registered. Now waiting " + (4-Server.getInstance().getJogadorList().size()) + " players.");
-						Server.getInstance().broadcastEspera("Esperando " + (4-Server.getInstance().getJogadorList().size()) + " jogadores se conectarem.");
+						
+						// Se 4 jogadores se registrarem, começar uma thread de Chat e de Mesa
+						if(Server.getInstance().getJogadorList().size() == 4){
+							ApplicationController.getInstance().logData(name + " registered. Table complete. Creating table...");
+							Server.getInstance().broadcastEspera("Partida iniciando...");
+							
+							Chat chat = new Chat(Server.getInstance().getJogadorList());
+							Thread threadChat = new Thread(chat);
+							threadChat.start();
+							
+//							Mesa mesa = new Mesa(chat);
+//							Thread threadMesa = new Thread(mesa);
+//							threadMesa.start();
+							
+							Server.getInstance().getJogadorList().clear();
+						}else{
+							ApplicationController.getInstance().logData(name + " registered. Now waiting " + (4-Server.getInstance().getJogadorList().size()) + " players.");
+							Server.getInstance().broadcastEspera("Esperando " + (4-Server.getInstance().getJogadorList().size()) + " jogadores se conectarem.");
+						}
 					} else {
 						sendMessage(Messages.NOK);
 					}
@@ -78,6 +95,12 @@ public class Client implements Runnable {
 			}
 		} catch (IOException e) {
 			System.out.println("Perdemos contato com o socket cliente");
+			try {
+				ApplicationController.getInstance().logData("Lost connection to client");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			endClient(false);
 		}
 	}

@@ -14,7 +14,7 @@ public class Server {
 
 	private ServerSocket serverSocket;
 	private ArrayList<Client> clientList;
-	private ArrayList<Jogador> jogadorList;
+	private ArrayList<Jogador> listaEsperaJogadores;
 	private HashMap<String, Client> clientMap;
 	private Thread acceptThread = null;
 	private static Server instance;
@@ -25,7 +25,7 @@ public class Server {
 		serverSocket = new ServerSocket();
 		clientList = new ArrayList<Client>();
 		clientMap = new HashMap<String, Client>();
-		jogadorList = new ArrayList<Jogador>();
+		listaEsperaJogadores = new ArrayList<Jogador>();
 	}
 	
 	// Encerra o servidor e todas as suas threads
@@ -78,14 +78,6 @@ public class Server {
 						Thread clientThread = new Thread(client);
 						clientThread.start();
 						
-						// Se 4 jogadores se registrarem, começar uma thread de Chat e de Mesa
-						if(jogadorList.size() == 4){
-							
-							ApplicationController.getInstance().logData("4 players connected.");
-							broadcastEspera("Partida iniciando...");
-							
-							jogadorList.clear();
-						}
 					}
 				} catch (IOException e) {
 					try {
@@ -103,7 +95,7 @@ public class Server {
 	}
 	
 	
-	// Remove o client da lista de sockets e da lista de registro
+	// Remove o client da lista de sockets e da lista de registro e da lista de espera
 	public void removeClient(Client client) throws IOException {
 		if(!this.clientList.remove(client)) {
 			ApplicationController.getInstance().logData("Cliente nao existia na lista");
@@ -117,10 +109,15 @@ public class Server {
 				clientMap.remove(s);
 			}
 		}
+		
+		for (int i = 0; i < listaEsperaJogadores.size(); i++) {
+			if(listaEsperaJogadores.get(i).getClient().equals(client))
+				listaEsperaJogadores.remove(i);
+		}
 	}
 	
 	public void broadcastEspera(String msg){
-		for(Jogador jogador : jogadorList){
+		for(Jogador jogador : listaEsperaJogadores){
 			jogador.getClient().sendMessage(msg);
 		}
 	}
@@ -139,10 +136,10 @@ public class Server {
 	}
 	
 	public ArrayList<Jogador> getJogadorList(){
-		return jogadorList;
+		return listaEsperaJogadores;
 	}
 	
 	public void addJogador(Jogador jogador){
-		jogadorList.add(jogador);
+		listaEsperaJogadores.add(jogador);
 	}
 }
