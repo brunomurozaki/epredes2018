@@ -17,6 +17,7 @@ public class Client implements Runnable {
 	private PrintWriter writer;
 	private BufferedReader reader;
 	private boolean isRunning = true;
+	private boolean isReMatch = true;
 
 	// Cuida de toda a comunicacao entre o servidor e o cliente. Cada accept gera uma nova instancia dessa classe
 	public Client(Socket clientSocket) throws IOException {
@@ -66,9 +67,17 @@ public class Client implements Runnable {
 						
 						// Se 4 jogadores se registrarem, começar uma thread de Chat e de Mesa
 						if(Server.getInstance().getJogadorList().size() == 4){
+							
 							ApplicationController.getInstance().logData(name + " registered. Table complete. Creating table...");
 							Server.getInstance().broadcastEspera("Partida iniciando...");
 							
+							System.out.println("teste: " + Server.getInstance().getJogadorList().get(0).getNome());
+							
+							String aux = "One chat starting with players:";
+							for (int i = 0; i < Server.getInstance().getJogadorList().size(); i++) {
+								aux = aux + " " + Server.getInstance().getJogadorList().get(i).getNome() + ",";
+							}
+							ApplicationController.getInstance().logData(aux);
 							Chat chat = new Chat(Server.getInstance().getJogadorList());
 							Thread threadChat = new Thread(chat);
 							threadChat.start();
@@ -76,8 +85,8 @@ public class Client implements Runnable {
 //							Mesa mesa = new Mesa(chat);
 //							Thread threadMesa = new Thread(mesa);
 //							threadMesa.start();
-							
-							Server.getInstance().getJogadorList().clear();
+							if(!isReMatch)
+								Server.getInstance().getJogadorList().clear();
 						}else{
 							ApplicationController.getInstance().logData(name + " registered. Now waiting " + (4-Server.getInstance().getJogadorList().size()) + " players.");
 							Server.getInstance().broadcastEspera("Esperando " + (4-Server.getInstance().getJogadorList().size()) + " jogadores se conectarem.");
