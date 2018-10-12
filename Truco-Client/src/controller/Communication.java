@@ -73,8 +73,16 @@ public class Communication {
 								System.err.println("Protocolo invalido!");
 							}
 						}
-						
-						System.out.println(message);
+						if(message.equals(Messages.CHAT)) {
+							String res = reader.readLine();
+							ApplicationController.getInstance().showMessage(res + "\n");
+						}else {
+							if(message.equals(Messages.PLAY)) {
+								String res = reader.readLine();
+								ApplicationController.getInstance().showMessage(res + "\n");
+								ApplicationController.getInstance().enableChat();
+							}
+						}
 					}
 					
 					socket.close();

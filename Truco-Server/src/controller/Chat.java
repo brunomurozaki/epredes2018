@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import model.Jogador;
+import util.Messages;
 
 public class Chat implements Runnable {
 	
@@ -30,7 +31,7 @@ public class Chat implements Runnable {
 		while(true){
 			
 			
-		}		
+		}
 	}
 
 	public ArrayList<Jogador> getListaJogadores() {
@@ -43,6 +44,7 @@ public class Chat implements Runnable {
 	
 	public void broadcastAll(String msg, ArrayList<Jogador> lista){
 		for(Jogador jogador : lista){
+			jogador.getClient().sendMessage(Messages.CHAT);
 			jogador.getClient().sendMessage(msg);
 		}
 	}

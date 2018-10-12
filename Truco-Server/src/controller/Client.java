@@ -69,7 +69,8 @@ public class Client implements Runnable {
 						if(Server.getInstance().getJogadorList().size() == 4){
 							
 							ApplicationController.getInstance().logData(name + " registered. Table complete. Creating table...");
-							Server.getInstance().broadcastEspera("Partida iniciando...");
+							Server.getInstance().broadcastEspera(Messages.PLAY);
+							Server.getInstance().broadcastEspera("Sistema: Partida iniciando...");
 							
 							System.out.println("teste: " + Server.getInstance().getJogadorList().get(0).getNome());
 							
@@ -89,7 +90,8 @@ public class Client implements Runnable {
 								Server.getInstance().getJogadorList().clear();
 						}else{
 							ApplicationController.getInstance().logData(name + " registered. Now waiting " + (4-Server.getInstance().getJogadorList().size()) + " players.");
-							Server.getInstance().broadcastEspera("Esperando " + (4-Server.getInstance().getJogadorList().size()) + " jogadores se conectarem.");
+							Server.getInstance().broadcastEspera(Messages.CHAT);
+							Server.getInstance().broadcastEspera("Sistema: Esperando " + (4-Server.getInstance().getJogadorList().size()) + " jogadores se conectarem.");
 						}
 					} else {
 						sendMessage(Messages.NOK);
@@ -98,7 +100,10 @@ public class Client implements Runnable {
 					
 				} else if(message.equals(Messages.DISCONNECT)) {
 					endClient(false);
-				} 
+				} else if(message.equals(Messages.CHAT)){
+					String msg = reader.readLine();
+					Server.getInstance().broadcastEspera(msg);
+				}
 				
 				//System.out.println(message);
 			}

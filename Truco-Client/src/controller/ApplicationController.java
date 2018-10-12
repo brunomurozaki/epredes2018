@@ -35,6 +35,10 @@ public class ApplicationController {
 		startMainWindow();
 	}
 	
+	public void showMessage(String msg) {
+		this.mainWindow.showMessage(msg);
+	}
+	
 	public void login(String name) {
 		try {
 			
@@ -42,6 +46,10 @@ public class ApplicationController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void enableChat(){
+		this.mainWindow.enableChat();
 	}
 	
 	public static ApplicationController getInstance() {
