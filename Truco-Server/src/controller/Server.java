@@ -19,7 +19,6 @@ public class Server {
 	private Thread acceptThread = null;
 	private static Server instance;
 	private boolean keepAlive = true;
-	private int contador = 0;
 	
 	public Server() throws IOException {
 		serverSocket = new ServerSocket();

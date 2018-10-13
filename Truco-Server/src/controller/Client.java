@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import javax.xml.ws.handler.MessageContext;
 
@@ -18,6 +19,15 @@ public class Client implements Runnable {
 	private BufferedReader reader;
 	private boolean isRunning = true;
 	private boolean isReMatch = true;
+	private ArrayList<Jogador> chat;
+
+	public ArrayList<Jogador> getChat() {
+		return chat;
+	}
+
+	public void setChat(ArrayList<Jogador> chat) {
+		this.chat = chat;
+	}
 
 	// Cuida de toda a comunicacao entre o servidor e o cliente. Cada accept gera uma nova instancia dessa classe
 	public Client(Socket clientSocket) throws IOException {
@@ -46,9 +56,14 @@ public class Client implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
-			
+		
+	public void broadcastChat(String msg) {
+		for(Jogador jogador : this.chat) {
+			jogador.getClient().sendMessage(msg);
+		}
+	}
+	
 	@Override
 	public void run() {
 		try {
@@ -71,17 +86,22 @@ public class Client implements Runnable {
 							ApplicationController.getInstance().logData(name + " registered. Table complete. Creating table...");
 							Server.getInstance().broadcastEspera(Messages.PLAY);
 							Server.getInstance().broadcastEspera("Sistema: Partida iniciando...");
-							
-							System.out.println("teste: " + Server.getInstance().getJogadorList().get(0).getNome());
-							
+														
 							String aux = "One chat starting with players:";
 							for (int i = 0; i < Server.getInstance().getJogadorList().size(); i++) {
 								aux = aux + " " + Server.getInstance().getJogadorList().get(i).getNome() + ",";
 							}
 							ApplicationController.getInstance().logData(aux);
-							Chat chat = new Chat(Server.getInstance().getJogadorList());
-							Thread threadChat = new Thread(chat);
-							threadChat.start();
+//							Chat chat = new Chat(Server.getInstance().getJogadorList());
+//							Thread threadChat = new Thread(chat);
+//							threadChat.start();
+							
+							// Cada um dos quatro clientes da sala terá uma referência
+							// para os quatro clientes da sessão
+							
+							for (Jogador jogador : Server.getInstance().getJogadorList()) {
+								jogador.getClient().setChat(Server.getInstance().getJogadorList()); 
+							}
 							
 //							Mesa mesa = new Mesa(chat);
 //							Thread threadMesa = new Thread(mesa);
@@ -101,8 +121,10 @@ public class Client implements Runnable {
 				} else if(message.equals(Messages.DISCONNECT)) {
 					endClient(false);
 				} else if(message.equals(Messages.CHAT)){
+					
 					String msg = reader.readLine();
-					Server.getInstance().broadcastEspera(msg);
+					ApplicationController.getInstance().logData("Request to deliver chat message:" + msg);
+					broadcastChat(msg);
 				}
 				
 				//System.out.println(message);

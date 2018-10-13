@@ -14,6 +14,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
+import controller.ApplicationController;
 import controller.Communication;
 import util.Messages;
 
@@ -129,25 +130,25 @@ public class MainWindow extends JFrame {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				
-				try {
-				//Se o usuário apertar o enter, enviar a mensagem para o servidor, para que o mesmo envie a mensagem para todos os usuários
-					if (e.getKeyCode()==KeyEvent.VK_ENTER) {
-						Communication.getInstance().sendMessage(Messages.CHAT);
-						Communication.getInstance().sendMessage(messagePane.getText());
-						messagePane.setText("");
-					}
-				} catch (UnknownHostException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 
 			@Override
-			public void keyReleased(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {
+				try {
+					//Se o usuário apertar o enter, enviar a mensagem para o servidor, para que o mesmo envie a mensagem para todos os usuários
+						if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+							Communication.getInstance().sendMessage(Messages.CHAT);
+							Communication.getInstance().sendMessage(messagePane.getText().replaceAll("\n", ""));
+							messagePane.setText(null);
+						}
+					} catch (UnknownHostException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {}
@@ -156,7 +157,6 @@ public class MainWindow extends JFrame {
 	
 	public void showMessage(String msg) {
 		this.chatPane.setText(this.chatPane.getText() + msg);
-
 	}
 	
 }
