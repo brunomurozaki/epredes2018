@@ -19,4 +19,6 @@ public class Messages {
 	
 	public final static String ACK = "ack";
 	public final static String NOK = "nok";
+	
+	public final static String SEND_ONLINE_USERS = "list";
 }
