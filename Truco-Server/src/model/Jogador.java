@@ -22,9 +22,9 @@ public class Jogador {
 		this.client = client;
 	}
 	
-	public void sendDealer(String cardName) {
+	public void sendDealer(String playerName, String cardName) {
 		sendMessage(Messages.SEND_DEALER);
-		sendMessage(nome);
+		sendMessage(playerName);
 		sendMessage(cardName);
 	}
 	

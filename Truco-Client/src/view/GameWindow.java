@@ -195,6 +195,8 @@ public class GameWindow extends JFrame {
 		scorePanel.changeTurn(name);
 		if(this.myName.equals(name))
 			this.canPlay = true;
+		else 
+			this.canPlay = false;
 	}
 	
 	public void drawCard(String cardName) {

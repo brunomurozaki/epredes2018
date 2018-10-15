@@ -179,7 +179,11 @@ public class Mesa implements Runnable {
 		}
 		
 		fullJogada[i] = c;
-		jogadorJogada.sendDealer(c.translateCard());
+		
+		for(Jogador j : jogadores) {
+			j.sendDealer(jogadorJogada.getNome(), c.translateCard());	
+		}
+		
 		comecarTurno();
 		
 	}
@@ -299,8 +303,9 @@ public class Mesa implements Runnable {
 
 	// retorna proximo jogador da mesa
 	private Jogador proximoJogador() {
-		if(currentPlayer == 3)
+		if(currentPlayer == 4)
 			currentPlayer = 0;
+		
 		return jogadores.get(currentPlayer++);
 	}
 
