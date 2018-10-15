@@ -153,7 +153,7 @@ public class GameWindow extends JFrame {
 		this.gamePane.add(scorePanel);
 		
 		// remover isto depois
-		this.startGame();
+		//this.startGame();
 	}
 	
 	public void startGame() {

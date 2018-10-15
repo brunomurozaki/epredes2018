@@ -1,13 +1,9 @@
 package misc;
 
-import java.io.IOException;
-import java.util.Scanner;
-
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import controller.ApplicationController;
-import controller.Communication;
 
 public class Main {
 

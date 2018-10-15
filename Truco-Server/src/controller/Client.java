@@ -7,8 +7,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import javax.xml.ws.handler.MessageContext;
-
 import model.Jogador;
 import util.Messages;
 
