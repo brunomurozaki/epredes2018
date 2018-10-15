@@ -38,6 +38,7 @@ public class GameWindow extends JFrame {
 	private DeckPanel bottomPanel;
 	
 	private DeckPanel dealerPanel;
+	private DeckPanel viraPanel;
 	
 	private ArrayList<DeckPanel> panelList;
 	
@@ -172,10 +173,14 @@ public class GameWindow extends JFrame {
 		rightPanel = new DeckPanel(splittedNames[3], false);
 		rightPanel.setLocation(380, 210);
 		
+		viraPanel = new DeckPanel("Vira", false);
+		viraPanel.setLocation(0, 0);
+		
 		this.panelList.add(bottomPanel);
 		this.panelList.add(rightPanel);
 		this.panelList.add(leftPanel);
 		this.panelList.add(topPanel);
+		this.panelList.add(viraPanel);
 		
 		dealerPanel = new DeckPanel("Mesa", true);
 		dealerPanel.setLocation(190, 210);
@@ -185,6 +190,7 @@ public class GameWindow extends JFrame {
 		this.gamePane.add(leftPanel);
 		this.gamePane.add(topPanel);
 		this.gamePane.add(dealerPanel);
+		this.gamePane.add(viraPanel);
 	}
 	
 	public void receiveDealerCard(String playerName, String cardName) {
@@ -205,7 +211,7 @@ public class GameWindow extends JFrame {
 	}
 	
 	public void clearDealer() {
-		dealerPanel.clearDealer();
+		dealerPanel.clearPanel();
 	}
 	
 	public void removeCard(String name, String cardName) {
@@ -214,6 +220,14 @@ public class GameWindow extends JFrame {
 				p.removeCard(cardName);
 			}
 		}
+	}
+	
+	public void viraCard(String name) {
+		
+		viraPanel.clearPanel();
+		
+		viraPanel.addCard(name);
+		
 	}
 	
 	public void drawCard(String cardName) {
@@ -225,8 +239,6 @@ public class GameWindow extends JFrame {
 				p.addCard("red_back");
 			}
 		}
-		
-		
 	}
 	
 	public boolean isCanPlay() {

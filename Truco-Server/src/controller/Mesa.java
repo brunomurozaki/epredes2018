@@ -427,6 +427,16 @@ public class Mesa implements Runnable {
 
 		// vira ultima carta do baralho
 		vira = baralho.retirarCarta();
+		
+		broadcastVira();
+	}
+
+	// Envia para todos os jogadores a carta virada
+	private void broadcastVira() {
+		for(Jogador j : jogadores) {
+			j.sendMessage(Messages.DRAW_VIRA);
+			j.sendMessage(vira.translateCard());
+		}
 	}
 
 	// retorna proximo jogador da mesa

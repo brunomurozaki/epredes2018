@@ -25,7 +25,6 @@ public class Main {
 	 * - Truco
 	 * - Mensagem de fim de jogo
 	 * - ini
-	 * - Vira no client
 	 * */
 	
 }

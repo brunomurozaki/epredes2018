@@ -126,6 +126,15 @@ public class ApplicationController {
 		}
 	}
 	
+	public void updateVira(String cardName) {
+		if(gameWindow == null) {
+			System.err.println("There is no game to update the vira");
+			return;
+		}
+		
+		gameWindow.viraCard(cardName);
+	}
+	
 	public void updateScore(String score1, String score2) {
 		if(gameWindow == null) {
 			System.err.println("There is no game to update the score");

@@ -188,6 +188,10 @@ public class Communication {
 							String score2 = reader.readLine();
 							
 							ApplicationController.getInstance().updateScore(score1, score2);
+						} else if(message.equals(Messages.DRAW_VIRA)) {
+							String cardName = reader.readLine();
+							
+							ApplicationController.getInstance().updateVira(cardName);
 						} else {
 							System.err.println("Mensagem " + message + " nao reconhecida");
 						}

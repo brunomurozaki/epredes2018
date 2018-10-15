@@ -72,11 +72,7 @@ public class DeckPanel extends JPanel {
 		this.repaint();
 	}
 
-	public void clearDealer() {
-		if (!isDealer) {
-			System.err.println("Tentando limpar dealer mas nao eh dealer");
-			return;
-		}
+	public void clearPanel() {
 
 		Iterator<CardPanel> setIt = cardMap.values().iterator(); 
 		
