@@ -8,10 +8,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -29,11 +31,19 @@ public class GameWindow extends JFrame {
 	private static final int WIDTH = 900;
 	private static final int HEIGHT = 600;
 	
-	private JPanel gameWindow;
+	private JPanel gamePane;
 	private JScrollPane chatPane;
 	private JTextArea chatHistory;
 	private JTextField messageField;
 	private JButton sendButton;
+	private ScorePanel scorePanel;
+	
+	private DeckPanel frontPanel;
+	private DeckPanel leftPanel;
+	private DeckPanel rightPanel;
+	private DeckPanel minePanel;
+	
+	private DeckPanel dealerPanel;
 	
 	private String names;
 	
@@ -103,11 +113,11 @@ public class GameWindow extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setTitle("Truco!");
 		
-		this.gameWindow = new JPanel();
-		this.gameWindow.setSize(560, 540);
-		this.gameWindow.setLocation(10, 10);
-		this.gameWindow.setLayout(null);
-		this.gameWindow.setBackground(Color.GREEN);
+		this.gamePane = new JPanel();
+		this.gamePane.setSize(560, 540);
+		this.gamePane.setLocation(10, 10);
+		this.gamePane.setLayout(null);
+		this.gamePane.setBackground(Color.GREEN);
 		
 		this.chatHistory = new JTextArea();
 		this.chatHistory.setSize(300, 490);
@@ -128,10 +138,47 @@ public class GameWindow extends JFrame {
 		this.sendButton.setSize(56, 30);
 		this.sendButton.setLocation(825, 500);
 		
-		this.add(this.gameWindow);
+		this.scorePanel = new ScorePanel();
+		this.scorePanel.setLocation(480, 0);
+		
+		//CardPanel panel = new CardPanel("10C");
+		//this.setLocation(0, 0);
+		
+		this.add(this.gamePane);
 		this.add(this.chatPane);
 		this.add(this.messageField);
 		this.add(this.sendButton);
+		
+		
+		this.gamePane.add(scorePanel);
+		
+		// remover isto depois
+		this.startGame();
+	}
+	
+	public void startGame() {
+		String[] splittedNames = this.names.split(";");
+		
+		minePanel = new DeckPanel(splittedNames[0]);
+		minePanel.setLocation(190, 410);
+		
+		rightPanel = new DeckPanel(splittedNames[1]);
+		rightPanel.setLocation(380, 210);
+		
+		leftPanel = new DeckPanel(splittedNames[2]);
+		leftPanel.setLocation(0, 210);
+		
+		frontPanel = new DeckPanel(splittedNames[3]);
+		frontPanel.setLocation(190, 0);
+		
+		dealerPanel = new DeckPanel("Mesa");
+		dealerPanel.setLocation(190, 210);
+		
+		this.gamePane.add(minePanel);
+		this.gamePane.add(rightPanel);
+		this.gamePane.add(leftPanel);
+		this.gamePane.add(frontPanel);
+		this.gamePane.add(dealerPanel);
 	}
 	
 	public void showWindow() {
