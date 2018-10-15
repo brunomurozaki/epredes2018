@@ -22,6 +22,12 @@ public class Jogador {
 		this.client = client;
 	}
 	
+	public void sendDealer(String cardName) {
+		sendMessage(Messages.SEND_DEALER);
+		sendMessage(nome);
+		sendMessage(cardName);
+	}
+	
 	public void sendTurn(String name) {
 		sendMessage(Messages.START_ROUND);
 		sendMessage(name);

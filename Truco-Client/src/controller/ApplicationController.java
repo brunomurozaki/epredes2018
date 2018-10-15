@@ -122,6 +122,15 @@ public class ApplicationController {
 		}
 	}
 	
+	public void receiveDealer(String playerName, String cardName) {
+		if(gameWindow == null) {
+			System.err.println("There is no game to receive dealer card");
+			return;
+		}
+		
+		gameWindow.receiveDealerCard(playerName, cardName);
+	}
+	
 	public void changeTurn(String name) {
 		if(gameWindow == null) {
 			System.err.println("There is no game to start round");
@@ -139,7 +148,7 @@ public class ApplicationController {
 		
 		if(gameWindow.canPlay) {
 			try {
-				Communication.getInstance().sendPlayMessage(cardName);
+				Communication.getInstance().sendPlayMessage(cardName, clientName);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

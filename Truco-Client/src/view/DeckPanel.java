@@ -12,12 +12,12 @@ public class DeckPanel extends JPanel{
 	private String name;
 	private static final int WIDTH = 180;
 	private static final int HEIGHT = 120;
-	
-	
 	public HashMap<String, CardPanel> cardMap;
+	private boolean isDealer;
 	
 	
-	public DeckPanel(String name) {
+	public DeckPanel(String name, boolean isDealer) {
+		this.isDealer = isDealer;
 		this.name = name;
 		this.cardMap = new HashMap<>();
 		
@@ -39,8 +39,14 @@ public class DeckPanel extends JPanel{
 			cardName += cardMap.keySet().size();
 		}
 		
-		CardPanel panel = new CardPanel(cardName, isDefault);
-		panel.setLocation(cardMap.keySet().size() * 60, 30);
+		CardPanel panel = new CardPanel(cardName, isDefault, isDealer);
+		
+		if(isDealer) {
+			panel.setLocation(cardMap.keySet().size() * 40, 30);	
+		} else {
+			panel.setLocation(cardMap.keySet().size() * 60, 30);
+		}
+		
 		this.add(panel);
 		this.repaint();
 		
@@ -57,10 +63,6 @@ public class DeckPanel extends JPanel{
 		this.labelName.setSize(150, 30);
 		this.add(labelName);
 		
-		// Remover isso depois
-//		this.addCard("10C");
-//		this.addCard("10D");
-//		this.addCard("7D");
 	}
 	
 	public String getName() {

@@ -160,16 +160,16 @@ public class GameWindow extends JFrame {
 	public void startGame() {
 		String[] splittedNames = this.names.split(";");
 		
-		bottomPanel = new DeckPanel(splittedNames[0]);
+		bottomPanel = new DeckPanel(splittedNames[0], false);
 		bottomPanel.setLocation(190, 410);
 		
-		leftPanel = new DeckPanel(splittedNames[1]);
+		leftPanel = new DeckPanel(splittedNames[1], false);
 		leftPanel.setLocation(0, 210);
 		
-		topPanel = new DeckPanel(splittedNames[2]);
+		topPanel = new DeckPanel(splittedNames[2], false);
 		topPanel.setLocation(190, 0);
 		
-		rightPanel = new DeckPanel(splittedNames[3]);
+		rightPanel = new DeckPanel(splittedNames[3], false);
 		rightPanel.setLocation(380, 210);
 		
 		this.panelList.add(bottomPanel);
@@ -177,7 +177,7 @@ public class GameWindow extends JFrame {
 		this.panelList.add(leftPanel);
 		this.panelList.add(topPanel);
 		
-		dealerPanel = new DeckPanel("Mesa");
+		dealerPanel = new DeckPanel("Mesa", true);
 		dealerPanel.setLocation(190, 210);
 		
 		this.gamePane.add(bottomPanel);
@@ -185,6 +185,10 @@ public class GameWindow extends JFrame {
 		this.gamePane.add(leftPanel);
 		this.gamePane.add(topPanel);
 		this.gamePane.add(dealerPanel);
+	}
+	
+	public void receiveDealerCard(String playerName, String cardName) {
+		dealerPanel.addCard(cardName);
 	}
 	
 	public void changeTurn(String name) {

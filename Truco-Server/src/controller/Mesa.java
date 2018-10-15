@@ -22,10 +22,14 @@ public class Mesa implements Runnable {
 	private static final int MAX_MESA = 4;
 	private int currentPlayer = 0;
 	private Jogador jogadorCorrente;
-
+	
+	private Carta[] fullJogada;
+	
+	
 	public Mesa() {
 		jogadores = new ArrayList<>();
 		jogadorPorTime = new HashMap<>();
+		fullJogada = new Carta[MAX_MESA];
 		mao = 0;
 	}
 	
@@ -148,9 +152,9 @@ public class Mesa implements Runnable {
 
 		//while (rodada < 3) {
 
-			//rodada++;
+			rodada++;
 			System.out.println("Rodada " + rodada);
-			comecarRodada();
+			comecarTurno();
 		//}
 
 		/*if (pontuacaoMaoTime1 == 2)
@@ -167,15 +171,20 @@ public class Mesa implements Runnable {
 	public void jogada(String playerName, String carta) {
 		Jogador jogadorJogada = getJogadorByName(playerName);
 		Carta c = jogadorJogada.removeCarta(carta);
+		int i = jogadores.indexOf(jogadorJogada);
 		
 		if(c == null) {
 			System.err.println("Erro na carta. N estava no deck do jogador");
 			return;
 		}
 		
+		fullJogada[i] = c;
+		jogadorJogada.sendDealer(c.translateCard());
+		comecarTurno();
+		
 	}
 
-	public void comecarRodada() {
+	public void comecarTurno() {
 
 		/*Jogador jogadorMaiorCarta = null, proximoJogador = null;
 		Carta maiorCarta = null, tempCarta = null;

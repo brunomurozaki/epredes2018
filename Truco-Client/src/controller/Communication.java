@@ -38,9 +38,10 @@ public class Communication {
 		startListeningMessages();
 	}
 
-	public void sendPlayMessage(String cardName) {
+	public void sendPlayMessage(String cardName, String name) {
 		sendMessage(Messages.PLAY);
 		sendMessage(cardName);
+		sendMessage(name);
 	}
 	
 	public void sendChatMessage(String msg, String type) {
@@ -171,12 +172,13 @@ public class Communication {
 
 							ApplicationController.getInstance().receiveChatMessage(res, typeStr);
 
-						} else {
-							if (message.equals(Messages.PLAY)) {
-								String res = reader.readLine();
-								// ApplicationController.getInstance().receiveChatMessage(res + "\n");
-							}
+						} else if(message.equals(Messages.SEND_DEALER)) {
+							String name = reader.readLine();
+							String cardName = reader.readLine();
+							
+							ApplicationController.getInstance().receiveDealer(name, cardName);
 						}
+						
 					}
 
 					tcpSocket.close();
