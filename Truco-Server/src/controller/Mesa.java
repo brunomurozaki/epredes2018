@@ -20,7 +20,7 @@ public class Mesa implements Runnable {
 	private HashMap<Jogador, Integer> jogadorPorTime;
 	private static final int TIME1 = 1, TIME2 = 2;
 	private static final int MAIOR = 1, MENOR = -1, MELOU = 0;
-	private static final int MAX_MESA = 4;
+	private static final int MAX_MESA = 2;
 	private int currentPlayer = 0;
 	private static Chat chat;
 
@@ -47,13 +47,31 @@ public class Mesa implements Runnable {
 		broadcastWaitingMessage();
 	}
 	
+	public void broadcastChatMessage(String message) {
+		for(Jogador j : jogadores) {
+			j.sendMessage(Messages.CHAT);
+			j.sendMessage(message);
+			j.sendMessage(Messages.PUBLIC);
+		}
+	}
+	
 	public void broadcastWaitingMessage() {
 		int num = getNumPlayers();
 		
 		if(num == 0) {
+			String names = "";
+			
+			for(Jogador j : jogadores) {
+				names += j.getNome() + ";";
+			}
+			
 			for(Jogador j : jogadores) {
 				j.sendMessage(Messages.START_GAME);
-				j.sendMessage(String.valueOf(getNumPlayers()));
+				j.sendMessage(names);
+				
+				j.sendMessage(Messages.CHAT);
+				j.sendMessage("SERVER - INICIANDO JOGO");
+				j.sendMessage(Messages.PUBLIC);
 			}	
 		} else {
 			for(Jogador j : jogadores) {

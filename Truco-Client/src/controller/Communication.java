@@ -38,6 +38,12 @@ public class Communication {
 		startListeningMessages();
 	}
 
+	public void sendChatMessage(String msg, String type) {
+		sendMessage(Messages.CHAT);
+		sendMessage(msg);
+		sendMessage(type);
+	}
+	
 	// Envio mensagem de insercao de usuario no server
 	public void registerUser(String name) {
 		sendMessage(Messages.INSERT);
@@ -142,12 +148,15 @@ public class Communication {
 							startGameTreatment(names);
 						} else if (message.equals(Messages.CHAT)) {
 							String res = reader.readLine();
-							ApplicationController.getInstance().showMessage(res + "\n");
+							System.out.println("Recebi msg");
+							String typeStr = reader.readLine();
+							System.out.println("Recebi todas as msgs");
+							
+							ApplicationController.getInstance().receiveChatMessage(res, typeStr);
 						} else {
 							if (message.equals(Messages.PLAY)) {
 								String res = reader.readLine();
-								ApplicationController.getInstance().showMessage(res + "\n");
-								ApplicationController.getInstance().enableChat();
+								//ApplicationController.getInstance().receiveChatMessage(res + "\n");
 							}
 						}
 					}

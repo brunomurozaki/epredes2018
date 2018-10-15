@@ -42,8 +42,27 @@ public class ApplicationController {
 		startMainWindow();
 	}
 	
-	public void showMessage(String msg) {
-		this.mainWindow.showMessage(msg);
+	public void receiveChatMessage(String msg, String type) {
+		if(gameWindow == null) {
+			System.err.println("Mensagem de chat recebida fora da hora");
+			return;
+		}
+		
+		gameWindow.receiveChatMessage(msg, type);
+	}
+	
+	public void sendChatMessage(String msg, String type) {
+		if(gameWindow == null) {
+			System.err.println("Mensagem de chat enviada fora da hora");
+			return;
+		}
+		
+		try {
+			Communication.getInstance().sendChatMessage(msg, type);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void login(String name) {
@@ -74,12 +93,18 @@ public class ApplicationController {
 	}
 	
 	public void changeWaitingMessage(int num) {
+		if(this.waitingWidow == null) {
+			return;
+		}
+		
 		this.waitingWidow.changeMessage(num);
 	}
 	
 	public void initGame(String names) {
-		this.waitingWidow.dispose();
-		this.waitingWidow = null;
+		if(this.waitingWidow != null) {
+			this.waitingWidow.dispose();
+			this.waitingWidow = null;	
+		}
 		
 		this.gameWindow = new GameWindow(names);
 		gameWindow.showWindow();
@@ -97,9 +122,7 @@ public class ApplicationController {
 		}
 	}
 	
-	public void enableChat(){
-		this.mainWindow.enableChat();
-	}
+	
 	
 	public void updateOnlineList(String list) {
 		this.mainWindow.updateOnlineUsersList(list);

@@ -90,8 +90,6 @@ public class Client implements Runnable {
 					String res = String.valueOf(num);
 					sendMessage(Messages.ROOM);
 					sendMessage(res);
-					
-					ApplicationController.getInstance().logData("Enviei a msg pro client");
 				} else if (message.equals(Messages.CANCEL_WAIT)) {
 					ApplicationController.getInstance().removeJogador(this.name);
 				} else if(message.equals(Messages.ROOMLIST)) {
@@ -99,10 +97,13 @@ public class Client implements Runnable {
 				} else if(message.equals(Messages.DISCONNECT)) {
 					endClient(false);
 				} else if(message.equals(Messages.CHAT)){
-					
+					ApplicationController.getInstance().logData("Recebendo msg de chat");
 					String msg = reader.readLine();
-					ApplicationController.getInstance().logData("Request to deliver chat message:" + msg);
-					broadcastChat(msg);
+					String type = reader.readLine();
+					
+					ApplicationController.getInstance().logData("Li as duas strs");
+					
+					ApplicationController.getInstance().sendChatMessage(this.name, msg, type);
 				}
 				
 				//System.out.println(message);

@@ -44,6 +44,10 @@ public class ApplicationController {
 		LobbyController.getInstance().removeJogador(name);
 	}
 	
+	public void sendChatMessage(String name, String message, String type) {
+		LobbyController.getInstance().sendChatMessage(name, message, type);
+	}
+	
 	public static ApplicationController getInstance() throws IOException {
 		if(instance == null)
 			instance = new ApplicationController();

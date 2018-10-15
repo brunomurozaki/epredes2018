@@ -27,6 +27,14 @@ public class LobbyController {
 		
 	}
 	
+	public void sendChatMessage(String name, String message, String type) {
+		for(Mesa m : gameList) {
+			if(m.hasJogador(name)) {
+				m.broadcastChatMessage(name + " - " + message);
+			}
+		}	
+	}
+	
 	public int addJogador(String name, Client client) {
 		Jogador jogador = new Jogador(name, client);
 		

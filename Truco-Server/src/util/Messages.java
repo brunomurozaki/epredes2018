@@ -23,4 +23,7 @@ public class Messages {
 	public final static String NOK = "nok";
 	
 	public final static String SEND_ONLINE_USERS = "list";
+	
+	public final static String PUBLIC = "public";
+	public final static String TEAM = "team";
 }
