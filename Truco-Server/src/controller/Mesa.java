@@ -21,6 +21,7 @@ public class Mesa implements Runnable {
 	private static final int MAIOR = 1, MENOR = -1, MELOU = 0;
 	private static final int MAX_MESA = 4;
 	private int currentPlayer = 0;
+	private Jogador jogadorCorrente;
 
 	public Mesa() {
 		jogadores = new ArrayList<>();
@@ -37,12 +38,27 @@ public class Mesa implements Runnable {
 		return false;
 	}
 	
+	public Jogador getJogadorByName(String name) {
+		for(Jogador j : jogadores) {
+			if(j.getNome().equals(name))
+				return j;
+		}
+		
+		return null;
+	}
+	
 	public void removeJogador(String nome) {
 		for(int i = 0; i < jogadores.size(); i++) {
 			if(jogadores.get(i).getNome().equals(nome))
 				jogadores.remove(i);
 		}
 		broadcastWaitingMessage();
+	}
+	
+	private void broadcastChangeTurn(String name) {
+		for(Jogador j : jogadores) {
+			j.sendTurn(name);
+		}
 	}
 	
 	public void broadcastChatMessage(String message) {
@@ -130,14 +146,14 @@ public class Mesa implements Runnable {
 
 		rodada = 0;
 
-		while (pontuacaoMaoTime1 < 2 && pontuacaoMaoTime2 < 2) {
+		//while (rodada < 3) {
 
-			rodada++;
+			//rodada++;
 			System.out.println("Rodada " + rodada);
-			//comecarRodada();
-		}
+			comecarRodada();
+		//}
 
-		if (pontuacaoMaoTime1 == 2)
+		/*if (pontuacaoMaoTime1 == 2)
 			pontuacaoJogoTime1 += premioMao;
 		else
 			pontuacaoJogoTime2 += premioMao;
@@ -145,21 +161,41 @@ public class Mesa implements Runnable {
 		// remove cartas restantes
 		for (Jogador jogador : jogadores) {
 			jogador.entregarCartas();
+		}*/
+	}
+	
+	public void jogada(String playerName, String carta) {
+		Jogador jogadorJogada = getJogadorByName(playerName);
+		Carta c = jogadorJogada.removeCarta(carta);
+		
+		if(c == null) {
+			System.err.println("Erro na carta. N estava no deck do jogador");
+			return;
 		}
+		
 	}
 
-	private void comecarRodada() {
+	public void comecarRodada() {
 
-		Jogador jogadorMaiorCarta = null, proximoJogador = null;
+		/*Jogador jogadorMaiorCarta = null, proximoJogador = null;
 		Carta maiorCarta = null, tempCarta = null;
-		boolean melado = false;
+		boolean melado = false;*/
+		
+		jogadorCorrente = proximoJogador();
+		broadcastChangeTurn(jogadorCorrente.getNome());
 
-		for (int i = 0; i < jogadores.size(); i++) {
+		/*for (int i = 0; i < jogadores.size(); i++) {
 
 			// vez do jogador
 			proximoJogador = proximoJogador();
+			broadcastChangeTurn(proximoJogador.getNome());
+			
 			System.out.println("Vez do " + proximoJogador.getNome());
 			System.out.println(proximoJogador.getCartas() + "\n");
+			
+			
+			
+			
 			tempCarta = proximoJogador.removeCarta(null);
 
 			if (maiorCarta == null) {
@@ -188,9 +224,9 @@ public class Mesa implements Runnable {
 			} else {
 				pontuacaoMaoTime2++;
 			}
-		}
+		}*/
 
-		System.out.println(melado + " - " + maiorCarta);
+		//System.out.println(melado + " - " + maiorCarta);
 	}
 
 	public int compararCarta(Carta primeiraCarta, Carta segundaCarta) {

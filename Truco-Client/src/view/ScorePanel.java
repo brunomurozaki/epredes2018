@@ -13,6 +13,8 @@ public class ScorePanel extends JPanel {
 	private JLabel time1Score;
 	private JLabel time2Score;
 	
+	private JLabel turnLabel;
+	
 	public ScorePanel() {
 		initializeComponets();
 	}
@@ -30,8 +32,13 @@ public class ScorePanel extends JPanel {
 		this.time2Score.setSize(100, 30);
 		this.time2Score.setLocation(10, 40);
 		
+		this.turnLabel = new JLabel();
+		this.turnLabel.setSize(100, 30);
+		this.turnLabel.setLocation(10, 70);
+		
 		this.add(time1Score);
 		this.add(time2Score);
+		this.add(turnLabel);
 	}
 	
 	public void changeScore(int score, int time) {
@@ -39,5 +46,9 @@ public class ScorePanel extends JPanel {
 			this.time1Score.setText("Time 1: " + score);
 		else
 			this.time2Score.setText("Time 2: " + score);
+	}
+	
+	public void changeTurn(String name) {
+		this.turnLabel.setText("Vez: " + name);
 	}
 }

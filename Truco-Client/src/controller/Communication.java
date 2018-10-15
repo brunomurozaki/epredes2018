@@ -38,18 +38,23 @@ public class Communication {
 		startListeningMessages();
 	}
 
+	public void sendPlayMessage(String cardName) {
+		sendMessage(Messages.PLAY);
+		sendMessage(cardName);
+	}
+	
 	public void sendChatMessage(String msg, String type) {
 		sendMessage(Messages.CHAT);
 		sendMessage(msg);
 		sendMessage(type);
 	}
-	
+
 	// Envio mensagem de insercao de usuario no server
 	public void registerUser(String name) {
 		sendMessage(Messages.INSERT);
 		sendMessage(name);
 	}
-	
+
 	// Envio de mensagem de espera de sala
 	public void enterRoom() {
 		sendMessage(Messages.ROOM);
@@ -95,17 +100,16 @@ public class Communication {
 						Thread.sleep(1000);
 						sendPacket = new DatagramPacket(sendedMessage, sendedMessage.length,
 								InetAddress.getByName("127.0.0.1"), UDP_SERVER_PORT);
-						
+
 						udpSocket.send(sendPacket);
-						
+
 						receivePacket = new DatagramPacket(receiveMessage, receiveMessage.length);
-						
-				        udpSocket.receive(receivePacket);
-				        
-				        String received = new String(
-				        		receivePacket.getData(), 0, receivePacket.getLength());
-				        ApplicationController.getInstance().updateOnlineList(received);
-						
+
+						udpSocket.receive(receivePacket);
+
+						String received = new String(receivePacket.getData(), 0, receivePacket.getLength());
+						ApplicationController.getInstance().updateOnlineList(received);
+
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -140,28 +144,37 @@ public class Communication {
 						if (message.equals(Messages.INSERT)) {
 							String res = reader.readLine();
 							loginTreatment(res);
-						} else if(message.equals(Messages.ROOM)) {
+
+						} else if (message.equals(Messages.ROOM)) {
 							String res = reader.readLine();
 							roomTreatment(res);
-						} else if(message.equals(Messages.START_GAME)) {
+
+						} else if (message.equals(Messages.START_GAME)) {
 							String names = reader.readLine();
 							startGameTreatment(names);
-						} else if(message.equals(Messages.DRAW_CARD)) {
+
+						} else if (message.equals(Messages.START_ROUND)) {
+							String name = reader.readLine();
+							ApplicationController.getInstance().changeTurn(name);
+
+						} else if (message.equals(Messages.DRAW_CARD)) {
 							System.out.println("drawCard");
 							String card = reader.readLine();
 							System.out.println(card);
 							ApplicationController.getInstance().drawCard(card);
+
 						} else if (message.equals(Messages.CHAT)) {
 							String res = reader.readLine();
 							System.out.println("Recebi msg");
 							String typeStr = reader.readLine();
 							System.out.println("Recebi todas as msgs");
-							
+
 							ApplicationController.getInstance().receiveChatMessage(res, typeStr);
+
 						} else {
 							if (message.equals(Messages.PLAY)) {
 								String res = reader.readLine();
-								//ApplicationController.getInstance().receiveChatMessage(res + "\n");
+								// ApplicationController.getInstance().receiveChatMessage(res + "\n");
 							}
 						}
 					}
@@ -175,17 +188,17 @@ public class Communication {
 
 		receiveTCPThread.start();
 	}
-	
+
 	private void startGameTreatment(String names) {
 		ApplicationController.getInstance().initGame(names);
 	}
-	
+
 	private void roomTreatment(String res) {
 		int number = Integer.parseInt(res);
-		
+
 		ApplicationController.getInstance().changeWaitingMessage(number);
 	}
-	
+
 	private void loginTreatment(String res) {
 		if (res.equals(Messages.ACK)) {
 			ApplicationController.getInstance().successfulLogin();

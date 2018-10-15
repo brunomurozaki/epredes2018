@@ -99,9 +99,13 @@ public class Client implements Runnable {
 					String msg = reader.readLine();
 					String type = reader.readLine();
 					
-					ApplicationController.getInstance().logData("Li as duas strs");
-					
 					ApplicationController.getInstance().sendChatMessage(this.name, msg, type);
+					
+				} else if(message.equals(Messages.PLAY)) {
+					String cardName = reader.readLine();
+					String playerName = reader.readLine();
+					ApplicationController.getInstance().play(cardName, playerName);
+					
 				}
 				
 				//System.out.println(message);

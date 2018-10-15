@@ -44,9 +44,12 @@ public class GameWindow extends JFrame {
 	private String names;
 	private String myName;
 	
+	public boolean canPlay;
+	
 	public GameWindow(String names, String myName) {
 		this.names = names;
 		this.myName = myName;
+		this.canPlay = false;
 		this.panelList = new ArrayList<>();
 		initializeComponents();
 		initializeEvents();
@@ -184,7 +187,11 @@ public class GameWindow extends JFrame {
 		this.gamePane.add(dealerPanel);
 	}
 	
-	
+	public void changeTurn(String name) {
+		scorePanel.changeTurn(name);
+		if(this.myName.equals(name))
+			this.canPlay = true;
+	}
 	
 	public void drawCard(String cardName) {
 		
@@ -201,6 +208,10 @@ public class GameWindow extends JFrame {
 		}
 		
 		
+	}
+	
+	public boolean isCanPlay() {
+		return canPlay;
 	}
 	
 	public void showWindow() {

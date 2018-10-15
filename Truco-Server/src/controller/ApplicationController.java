@@ -48,6 +48,10 @@ public class ApplicationController {
 		LobbyController.getInstance().sendChatMessage(name, message, type);
 	}
 	
+	public void play(String cardName, String playerName) {
+		LobbyController.getInstance().getMesaByName(playerName).jogada(playerName, cardName);
+	}
+	
 	public static ApplicationController getInstance() throws IOException {
 		if(instance == null)
 			instance = new ApplicationController();

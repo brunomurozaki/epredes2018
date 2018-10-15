@@ -122,6 +122,33 @@ public class ApplicationController {
 		}
 	}
 	
+	public void changeTurn(String name) {
+		if(gameWindow == null) {
+			System.err.println("There is no game to start round");
+			return;
+		}
+		
+		gameWindow.changeTurn(name);
+	}
+	
+	public void play(String cardName) {
+		if(gameWindow == null) {
+			System.err.println("There is no game to play");
+			return;
+		}
+		
+		if(gameWindow.canPlay) {
+			try {
+				Communication.getInstance().sendPlayMessage(cardName);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			JOptionPane.showMessageDialog(gameWindow, "Ainda nao eh sua vez!");
+		}
+	}
+	
 	public void drawCard(String card) {
 		if(gameWindow == null) {
 			System.err.println("There is no game to draw a card");

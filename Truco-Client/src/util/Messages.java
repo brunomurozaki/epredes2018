@@ -18,6 +18,7 @@ public class Messages {
 	public final static String ROOMLIST = "roomlist";
 	public final static String TIME = "time";
 	public final static String PLAY = "play";
+	public final static String START_ROUND = "start_round";
 	
 	public final static String DRAW_CARD = "draw";
 	

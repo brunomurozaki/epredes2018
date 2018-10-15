@@ -10,9 +10,7 @@ public class Main {
 	private static boolean isRunning = true;
 	
 	public static void main(String[] args) {
-		ApplicationController.getInstance().startApp();
-		//ApplicationController.getInstance().startMainWindow();
-		//ApplicationController.getInstance().waitingRoom();
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -21,7 +19,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		//ApplicationController.getInstance().initGame("Fulano;Beltrano;Ciclano;Eu");
+		ApplicationController.getInstance().startApp();
 	}
 
 }

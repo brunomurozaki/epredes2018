@@ -16,6 +16,15 @@ public class LobbyController {
 		gameThread = new ArrayList<>();
 	}
 	
+	public Mesa getMesaByName(String name) {
+		for(Mesa m : gameList) {
+			if(m.hasJogador(name))
+				return m;
+		}
+		
+		return null;
+	}
+	
 	public void removeJogador(String name) {
 		Mesa m;
 		

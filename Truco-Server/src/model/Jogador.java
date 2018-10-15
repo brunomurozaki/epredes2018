@@ -2,6 +2,7 @@ package model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import controller.ApplicationController;
 import controller.Client;
@@ -11,17 +12,24 @@ public class Jogador {
 
 	private String nome;
 	private ArrayList<Carta> cartas;
+	private HashMap<String, Carta> cartasMap;
 	private Client client;
 
 	public Jogador(String nome, Client client) {
 		this.nome = nome;
 		cartas = new ArrayList<>();
+		cartasMap = new HashMap<>();
 		this.client = client;
+	}
+	
+	public void sendTurn(String name) {
+		sendMessage(Messages.START_ROUND);
+		sendMessage(name);
 	}
 
 	public void recebeCarta(Carta carta) {
 		cartas.add(carta);
-		
+		cartasMap.put(carta.translateCard(), carta);
 		try {
 			ApplicationController.getInstance().logData("Enviando a mensagem de draw");
 		} catch (IOException e) {
@@ -50,8 +58,11 @@ public class Jogador {
 		return cartas.toString();
 	}
 
-	public Carta removeCarta(Carta carta) {
-		return cartas.remove(0);
+	public Carta removeCarta(String carta) {
+		Carta c = cartasMap.get(carta);
+		cartas.remove(c);
+		cartasMap.remove(carta);
+		return c;
 	}
 	
 	public void entregarCartas() {
