@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 public class ScorePanel extends JPanel {
 
 	private static final int WIDTH = 100;
-	private static final int HEIGHT = 80;
+	private static final int HEIGHT = 100;
 	
 	private JLabel time1Score;
 	private JLabel time2Score;

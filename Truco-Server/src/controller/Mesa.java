@@ -118,18 +118,18 @@ public class Mesa implements Runnable {
 		pontuacaoJogoTime1 = 0;
 		pontuacaoJogoTime2 = 0;
 
-		while (pontuacaoJogoTime1 < 12 && pontuacaoJogoTime2 < 12) {
+		//while (pontuacaoJogoTime1 < 12 && pontuacaoJogoTime2 < 12) {
 
 			baralho = new Baralho();
 			baralho.embaralhar();
 
 			comecarMao();
-		}
+		//}
 
-		if (pontuacaoJogoTime1 == 12)
+		/*if (pontuacaoJogoTime1 == 12)
 			System.out.println("Time 1 ganhou!");
 		else
-			System.out.println("Time 2 ganhou!");
+			System.out.println("Time 2 ganhou!");*/
 	}
 
 	private void comecarMao() {

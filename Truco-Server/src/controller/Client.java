@@ -82,9 +82,9 @@ public class Client implements Runnable {
 						sendMessage(Messages.NOK);
 					}
 				} else if(message.equals(Messages.ROOM)) {
-					ApplicationController.getInstance().logData("Recebendo uma solicitacao de sala");
+					//ApplicationController.getInstance().logData("Recebendo uma solicitacao de sala");
 					int num = ApplicationController.getInstance().addJogador(this.name);
-					ApplicationController.getInstance().logData("Adicionei em uma nova sala. Faltam " + num);
+					//ApplicationController.getInstance().logData("Adicionei em uma nova sala. Faltam " + num);
 					String res = String.valueOf(num);
 					sendMessage(Messages.ROOM);
 					sendMessage(res);
@@ -95,7 +95,7 @@ public class Client implements Runnable {
 				} else if(message.equals(Messages.DISCONNECT)) {
 					endClient(false);
 				} else if(message.equals(Messages.CHAT)){
-					ApplicationController.getInstance().logData("Recebendo msg de chat");
+					//ApplicationController.getInstance().logData("Recebendo msg de chat");
 					String msg = reader.readLine();
 					String type = reader.readLine();
 					

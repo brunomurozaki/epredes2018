@@ -30,12 +30,6 @@ public class Jogador {
 	public void recebeCarta(Carta carta) {
 		cartas.add(carta);
 		cartasMap.put(carta.translateCard(), carta);
-		try {
-			ApplicationController.getInstance().logData("Enviando a mensagem de draw");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		// Avisa o cliente da carta
 		client.sendMessage(Messages.DRAW_CARD);
