@@ -20,6 +20,8 @@ public class Client implements Runnable {
 	private boolean isRunning = true;
 	private boolean isReMatch = true;
 	private ArrayList<Jogador> chat;
+	
+	private String name;
 
 	public ArrayList<Jogador> getChat() {
 		return chat;
@@ -77,45 +79,21 @@ public class Client implements Runnable {
 					// Se o cliente foi registrado no ClientMap com sucesso
 					if(Server.getInstance().registerClient(name, this)) {
 						sendMessage(Messages.ACK);
-						// Adicione ele à lista de jogadores em espera
-						Server.getInstance().addJogador(new Jogador(name, this));
-						
-						// Se 4 jogadores se registrarem, começar uma thread de Chat e de Mesa
-						if(Server.getInstance().getJogadorList().size() == 4){
-							
-							ApplicationController.getInstance().logData(name + " registered. Table complete. Creating table...");
-							Server.getInstance().broadcastEspera(Messages.PLAY);
-							Server.getInstance().broadcastEspera("Sistema: Partida iniciando...");
-														
-							String aux = "One chat starting with players:";
-							for (int i = 0; i < Server.getInstance().getJogadorList().size(); i++) {
-								aux = aux + " " + Server.getInstance().getJogadorList().get(i).getNome() + ",";
-							}
-							ApplicationController.getInstance().logData(aux);
-//							Chat chat = new Chat(Server.getInstance().getJogadorList());
-//							Thread threadChat = new Thread(chat);
-//							threadChat.start();
-							
-							// Cada um dos quatro clientes da sala terá uma referência
-							// para os quatro clientes da sessão
-							
-							for (Jogador jogador : Server.getInstance().getJogadorList()) {
-								jogador.getClient().setChat(Server.getInstance().getJogadorList()); 
-							}
-							
-//							Mesa mesa = new Mesa(chat);
-//							Thread threadMesa = new Thread(mesa);
-//							threadMesa.start();
-							if(!isReMatch)
-								Server.getInstance().getJogadorList().clear();
-						}else{
-							ApplicationController.getInstance().logData(name + " registered. Now waiting " + (4-Server.getInstance().getJogadorList().size()) + " players.");
-							Server.getInstance().broadcastEspera(Messages.CHAT);
-							Server.getInstance().broadcastEspera("Sistema: Esperando " + (4-Server.getInstance().getJogadorList().size()) + " jogadores se conectarem.");
-						}
+						this.name = name;
 					} else {
 						sendMessage(Messages.NOK);
 					}
+				} else if(message.equals(Messages.ROOM)) {
+					ApplicationController.getInstance().logData("Recebendo uma solicitacao de sala");
+					int num = ApplicationController.getInstance().addJogador(this.name);
+					ApplicationController.getInstance().logData("Adicionei em uma nova sala. Faltam " + num);
+					String res = String.valueOf(num);
+					sendMessage(Messages.ROOM);
+					sendMessage(res);
+					
+					ApplicationController.getInstance().logData("Enviei a msg pro client");
+				} else if (message.equals(Messages.CANCEL_WAIT)) {
+					ApplicationController.getInstance().removeJogador(this.name);
 				} else if(message.equals(Messages.ROOMLIST)) {
 					
 				} else if(message.equals(Messages.DISCONNECT)) {
@@ -139,5 +117,9 @@ public class Client implements Runnable {
 			}
 			endClient(false);
 		}
+	}
+	
+	public String getName() {
+		return name;
 	}
 }

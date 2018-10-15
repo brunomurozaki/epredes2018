@@ -169,19 +169,7 @@ public class Server {
 			ApplicationController.getInstance().logData("Cliente nao existia na lista");
 		}
 
-		Set<String> keys = clientMap.keySet();
-
-		// N sei se funciona, mas acho que sim pq as instancias sao as mesmas
-		for (String s : keys) {
-			if (clientMap.get(s) == client) {
-				clientMap.remove(s);
-			}
-		}
-
-		for (int i = 0; i < listaEsperaJogadores.size(); i++) {
-			if (listaEsperaJogadores.get(i).getClient().equals(client))
-				listaEsperaJogadores.remove(i);
-		}
+		clientMap.remove(client.getName());
 	}
 
 	public void broadcastEspera(String msg) {
@@ -192,6 +180,10 @@ public class Server {
 
 	public ArrayList<Client> getClientList() {
 		return clientList;
+	}
+	
+	public HashMap<String, Client> getClientMap() {
+		return clientMap;
 	}
 
 	public static Server getInstance() throws IOException {

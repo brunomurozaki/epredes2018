@@ -5,14 +5,19 @@ import java.io.IOException;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import util.Messages;
+import view.GameWindow;
 import view.LoginWindow;
 import view.MainWindow;
+import view.WaitingWindow;
 
 public class ApplicationController {
 
 	private static ApplicationController instance;
 	private LoginWindow loginWindow;
 	private MainWindow mainWindow;
+	private WaitingWindow waitingWidow;
+	private GameWindow gameWindow;
 	private String clientName;
 	
 	public ApplicationController() {
@@ -21,7 +26,6 @@ public class ApplicationController {
 	
 	public void startMainWindow() {
 		loginWindow.hideWindow();
-		
 		mainWindow = new MainWindow();
 		mainWindow.showWindow();
 	}
@@ -51,6 +55,48 @@ public class ApplicationController {
 		}
 	}
 	
+	public void waitingRoom() {
+		
+		if(this.waitingWidow != null) {
+			System.err.println("Erro! Waiting Window ja existe");
+			return;
+		}
+		
+		
+		this.waitingWidow = new WaitingWindow();
+		this.waitingWidow.showWindow();
+		
+		try {
+			Communication.getInstance().enterRoom();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void changeWaitingMessage(int num) {
+		this.waitingWidow.changeMessage(num);
+	}
+	
+	public void initGame(String names) {
+		this.waitingWidow.dispose();
+		this.waitingWidow = null;
+		
+		this.gameWindow = new GameWindow(names);
+		gameWindow.showWindow();
+	}
+	
+	public void cancelWait() {
+		this.waitingWidow.dispose();
+		this.waitingWidow = null;
+		
+		try {
+			Communication.getInstance().sendMessage(Messages.CANCEL_WAIT);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void enableChat(){
 		this.mainWindow.enableChat();
 	}
@@ -65,16 +111,13 @@ public class ApplicationController {
 		return instance;
 	}
 	
-	public String getClientName() {
-		return clientName;
-	}
-	
 	public static JLabel generateSimpleLabel(String text) {
 		JLabel retorno = new JLabel(text);
 		retorno.setSize(300, 30);
-		
-		
 		return retorno;
 	}
 	
+	public String getClientName() {
+		return clientName;
+	}
 }

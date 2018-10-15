@@ -13,6 +13,7 @@ public class Main {
 	public static void main(String[] args) {
 		ApplicationController.getInstance().startApp();
 		//ApplicationController.getInstance().startMainWindow();
+		//ApplicationController.getInstance().waitingRoom();
 	}
 
 }

@@ -13,6 +13,8 @@ public class Messages {
 	public final static String STATUS = "status";
 	
 	public final static String ROOM = "room";
+	public final static String START_GAME = "start";
+	public final static String CANCEL_WAIT = "cancel_wait";
 	public final static String ROOMLIST = "roomlist";
 	public final static String TIME = "time";
 	public final static String PLAY = "play";

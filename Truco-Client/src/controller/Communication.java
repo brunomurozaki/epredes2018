@@ -43,6 +43,11 @@ public class Communication {
 		sendMessage(Messages.INSERT);
 		sendMessage(name);
 	}
+	
+	// Envio de mensagem de espera de sala
+	public void enterRoom() {
+		sendMessage(Messages.ROOM);
+	}
 
 	// Envio uma mensagem qualquer ao server
 	public void sendMessage(String message) {
@@ -62,6 +67,8 @@ public class Communication {
 		startUDPListening();
 	}
 
+	// Thread que a cada 100 milisegundos envia um pedido ao Server da lista
+	// por meio de uma mensagem UDP
 	private void startUDPListening() {
 		if (askForListThread != null) {
 			System.err.println("Thread UDP de receber mensagens ja iniciada");
@@ -83,16 +90,12 @@ public class Communication {
 						sendPacket = new DatagramPacket(sendedMessage, sendedMessage.length,
 								InetAddress.getByName("127.0.0.1"), UDP_SERVER_PORT);
 						
-						
-						System.out.println("Vou mandar o pacote");
 						udpSocket.send(sendPacket);
-						System.out.println("Mandei!");
-						
 						
 						receivePacket = new DatagramPacket(receiveMessage, receiveMessage.length);
-						System.out.println("Vou Comecar a esperar o pacote do server");
+						
 				        udpSocket.receive(receivePacket);
-				        System.out.println("recebi");
+				        
 				        String received = new String(
 				        		receivePacket.getData(), 0, receivePacket.getLength());
 				        ApplicationController.getInstance().updateOnlineList(received);
@@ -107,7 +110,6 @@ public class Communication {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 				}
 			}
 		};
@@ -131,15 +133,14 @@ public class Communication {
 
 						if (message.equals(Messages.INSERT)) {
 							String res = reader.readLine();
-							if (res.equals(Messages.ACK)) {
-								ApplicationController.getInstance().successfulLogin();
-							} else if (res.equals(Messages.NOK)) {
-								ApplicationController.getInstance().failedLogin();
-							} else {
-								System.err.println("Protocolo invalido!");
-							}
-						}
-						if (message.equals(Messages.CHAT)) {
+							loginTreatment(res);
+						} else if(message.equals(Messages.ROOM)) {
+							String res = reader.readLine();
+							roomTreatment(res);
+						} else if(message.equals(Messages.START_GAME)) {
+							String names = reader.readLine();
+							startGameTreatment(names);
+						} else if (message.equals(Messages.CHAT)) {
 							String res = reader.readLine();
 							ApplicationController.getInstance().showMessage(res + "\n");
 						} else {
@@ -159,6 +160,26 @@ public class Communication {
 		};
 
 		receiveTCPThread.start();
+	}
+	
+	private void startGameTreatment(String names) {
+		ApplicationController.getInstance().initGame(names);
+	}
+	
+	private void roomTreatment(String res) {
+		int number = Integer.parseInt(res);
+		
+		ApplicationController.getInstance().changeWaitingMessage(number);
+	}
+	
+	private void loginTreatment(String res) {
+		if (res.equals(Messages.ACK)) {
+			ApplicationController.getInstance().successfulLogin();
+		} else if (res.equals(Messages.NOK)) {
+			ApplicationController.getInstance().failedLogin();
+		} else {
+			System.err.println("Protocolo invalido!");
+		}
 	}
 
 	public static Communication getInstance() throws UnknownHostException, IOException {

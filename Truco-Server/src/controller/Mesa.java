@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -7,23 +8,77 @@ import java.util.Queue;
 import model.Baralho;
 import model.Carta;
 import model.Jogador;
+import util.Messages;
 
 public class Mesa implements Runnable {
 
 	private Baralho baralho;
-	private Queue<Jogador> jogadores;
+	private ArrayList<Jogador> jogadores;
 	private Carta vira;
 	private int pontuacaoJogoTime1, pontuacaoJogoTime2, pontuacaoMaoTime1, pontuacaoMaoTime2;
 	private int mao, rodada, premioMao;
 	private HashMap<Jogador, Integer> jogadorPorTime;
 	private static final int TIME1 = 1, TIME2 = 2;
 	private static final int MAIOR = 1, MENOR = -1, MELOU = 0;
+	private static final int MAX_MESA = 4;
+	private int currentPlayer = 0;
 	private static Chat chat;
 
-	public Mesa(Chat chat) {
-		jogadores = new LinkedList<>();
+	public Mesa() {
+		jogadores = new ArrayList<>();
 		jogadorPorTime = new HashMap<>();
 		mao = 0;
+	}
+	
+	public boolean hasJogador(String name) {
+		for(Jogador j : jogadores) {
+			if(j.getNome().equals(name))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public void removeJogador(String nome) {
+		for(int i = 0; i < jogadores.size(); i++) {
+			if(jogadores.get(i).getNome().equals(nome))
+				jogadores.remove(i);
+		}
+		broadcastWaitingMessage();
+	}
+	
+	public void broadcastWaitingMessage() {
+		int num = getNumPlayers();
+		
+		if(num == 0) {
+			for(Jogador j : jogadores) {
+				j.sendMessage(Messages.START_GAME);
+				j.sendMessage(String.valueOf(getNumPlayers()));
+			}	
+		} else {
+			for(Jogador j : jogadores) {
+				j.sendMessage(Messages.ROOM);
+				j.sendMessage(String.valueOf(getNumPlayers()));
+			}	
+		}
+	}
+	
+	public boolean mesaFull() {
+		return jogadores.size() == MAX_MESA ? true : false;
+	}
+	
+	public int getNumPlayers() {
+		return MAX_MESA - jogadores.size();
+	}
+	
+	public boolean addJogador(Jogador jogador) {
+		if(jogadores.size() == MAX_MESA) {
+			return false;
+		}
+		
+		jogadores.add(jogador);
+		
+		return true;
 	}
 
 	public void comecarJogo() {
@@ -182,11 +237,9 @@ public class Mesa implements Runnable {
 
 	// retorna proximo jogador da mesa
 	private Jogador proximoJogador() {
-
-		Jogador proximoJogador = jogadores.poll();
-		jogadores.add(proximoJogador);
-
-		return proximoJogador;
+		if(currentPlayer == 3)
+			currentPlayer = 0;
+		return jogadores.get(currentPlayer++);
 	}
 
 	@Override

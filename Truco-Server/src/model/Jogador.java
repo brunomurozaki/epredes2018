@@ -14,7 +14,6 @@ public class Jogador {
 	private Client client;
 
 	public Jogador(String nome, Client client) {
-
 		this.nome = nome;
 		cartas = new ArrayList<>();
 		this.client = client;
@@ -58,5 +57,9 @@ public class Jogador {
 
 	public void setClient(Client client) {
 		this.client = client;
+	}
+	
+	public void sendMessage(String message) {
+		client.sendMessage(message);
 	}
 }

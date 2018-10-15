@@ -36,7 +36,13 @@ public class ApplicationController {
 		this.mainWindow.logData(data);
 	}
 	
+	public int addJogador(String name) {
+		return LobbyController.getInstance().addJogador(name, server.getClientMap().get(name));
+	}
 	
+	public void removeJogador(String name) {
+		LobbyController.getInstance().removeJogador(name);
+	}
 	
 	public static ApplicationController getInstance() throws IOException {
 		if(instance == null)

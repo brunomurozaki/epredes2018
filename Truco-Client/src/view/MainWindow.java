@@ -161,7 +161,7 @@ public class MainWindow extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				ApplicationController.getInstance().waitingRoom();
 			}
 		});
 		
