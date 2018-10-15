@@ -105,7 +105,6 @@ public class Client implements Runnable {
 					String cardName = reader.readLine();
 					String playerName = reader.readLine();
 					ApplicationController.getInstance().play(cardName, playerName);
-					
 				}
 				
 				//System.out.println(message);

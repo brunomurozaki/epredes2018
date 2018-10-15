@@ -85,6 +85,8 @@ public class ApplicationController {
 		this.waitingWidow = new WaitingWindow();
 		this.waitingWidow.showWindow();
 		
+		this.mainWindow.setEnabled(false);
+		
 		try {
 			Communication.getInstance().enterRoom();
 		} catch (IOException e) {
@@ -114,12 +116,32 @@ public class ApplicationController {
 		this.waitingWidow.dispose();
 		this.waitingWidow = null;
 		
+		this.mainWindow.setEnabled(true);
+		
 		try {
 			Communication.getInstance().sendMessage(Messages.CANCEL_WAIT);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void updateScore(String score1, String score2) {
+		if(gameWindow == null) {
+			System.err.println("There is no game to update the score");
+			return;
+		}
+		
+		gameWindow.updateScore(score1, score2);
+	}
+	
+	public void clearDealer() {
+		if(gameWindow == null) {
+			System.err.println("There is no game to clear the dealer");
+			return;
+		}
+		
+		gameWindow.clearDealer();
 	}
 	
 	public void receiveDealer(String playerName, String cardName) {
@@ -141,6 +163,8 @@ public class ApplicationController {
 	}
 	
 	public void play(String cardName) {
+		System.out.println("Im gonna play " + cardName);
+		
 		if(gameWindow == null) {
 			System.err.println("There is no game to play");
 			return;
@@ -148,6 +172,7 @@ public class ApplicationController {
 		
 		if(gameWindow.canPlay) {
 			try {
+				gameWindow.removeCard(clientName, cardName);
 				Communication.getInstance().sendPlayMessage(cardName, clientName);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

@@ -20,6 +20,8 @@ public class Messages {
 	public final static String PLAY = "play";
 	public final static String START_ROUND = "start_round";
 	public final static String SEND_DEALER = "send_dealer";
+	public final static String CLEAR_DEALER = "clear_dealer";
+	public final static String SCORE = "score";
 	
 	public final static String DRAW_CARD = "draw";
 	

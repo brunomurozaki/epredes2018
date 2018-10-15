@@ -38,12 +38,14 @@ public class Communication {
 		startListeningMessages();
 	}
 
+	// Envia a mensagem de jogada iniciada ao servidor
 	public void sendPlayMessage(String cardName, String name) {
 		sendMessage(Messages.PLAY);
 		sendMessage(cardName);
 		sendMessage(name);
 	}
 	
+	// Envia a mensagem de chat para o servidor
 	public void sendChatMessage(String msg, String type) {
 		sendMessage(Messages.CHAT);
 		sendMessage(msg);
@@ -128,6 +130,7 @@ public class Communication {
 		askForListThread.start();
 	}
 
+	// Inicia a escuta na porta do TCP
 	private void startTCPListening() {
 		if (receiveTCPThread != null) {
 			System.err.println("Thread de receber mensagens ja iniciada");
@@ -177,6 +180,16 @@ public class Communication {
 							String cardName = reader.readLine();
 							
 							ApplicationController.getInstance().receiveDealer(name, cardName);
+						} else if(message.equals(Messages.CLEAR_DEALER)) {
+							ApplicationController.getInstance().clearDealer();
+							
+						} else if(message.equals(Messages.SCORE)) {
+							String score1 = reader.readLine();
+							String score2 = reader.readLine();
+							
+							ApplicationController.getInstance().updateScore(score1, score2);
+						} else {
+							System.err.println("Mensagem " + message + " nao reconhecida");
 						}
 						
 					}
@@ -191,6 +204,7 @@ public class Communication {
 		receiveTCPThread.start();
 	}
 
+	
 	private void startGameTreatment(String names) {
 		ApplicationController.getInstance().initGame(names);
 	}
@@ -201,6 +215,7 @@ public class Communication {
 		ApplicationController.getInstance().changeWaitingMessage(number);
 	}
 
+	// Tratamento do protocolo de resposta do login
 	private void loginTreatment(String res) {
 		if (res.equals(Messages.ACK)) {
 			ApplicationController.getInstance().successfulLogin();

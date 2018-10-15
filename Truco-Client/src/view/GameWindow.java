@@ -199,13 +199,26 @@ public class GameWindow extends JFrame {
 			this.canPlay = false;
 	}
 	
+	public void updateScore(String score1, String score2) {
+		scorePanel.changeScore(score1, 1);
+		scorePanel.changeScore(score2, 2);
+	}
+	
+	public void clearDealer() {
+		dealerPanel.clearDealer();
+	}
+	
+	public void removeCard(String name, String cardName) {
+		for(DeckPanel p : panelList) {
+			if(p.getName().equals(name)) {
+				p.removeCard(cardName);
+			}
+		}
+	}
+	
 	public void drawCard(String cardName) {
 		
 		for(DeckPanel p : panelList) {
-			
-			System.out.println(p.getName());
-			System.out.println(this.myName);
-			
 			if(p.getName().equals(this.myName)) {
 				p.addCard(cardName);
 			} else {

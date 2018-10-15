@@ -6,8 +6,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import controller.ApplicationController;
 
 public class Main {
-
-	private static boolean isRunning = true;
 	
 	public static void main(String[] args) {
 		
@@ -22,4 +20,12 @@ public class Main {
 		ApplicationController.getInstance().startApp();
 	}
 
+	/*
+	 * TODO: 
+	 * - Truco
+	 * - Mensagem de fim de jogo
+	 * - ini
+	 * - Vira no client
+	 * */
+	
 }

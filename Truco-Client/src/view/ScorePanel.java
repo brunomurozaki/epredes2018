@@ -41,7 +41,7 @@ public class ScorePanel extends JPanel {
 		this.add(turnLabel);
 	}
 	
-	public void changeScore(int score, int time) {
+	public void changeScore(String score, int time) {
 		if(time == 1)
 			this.time1Score.setText("Time 1: " + score);
 		else

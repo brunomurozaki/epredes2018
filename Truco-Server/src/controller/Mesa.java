@@ -24,12 +24,13 @@ public class Mesa implements Runnable {
 	private Jogador jogadorCorrente;
 	
 	private Carta[] fullJogada;
-	
+	private Jogador[] vencedorPorRodada;
 	
 	public Mesa() {
 		jogadores = new ArrayList<>();
 		jogadorPorTime = new HashMap<>();
 		fullJogada = new Carta[MAX_MESA];
+		vencedorPorRodada = new Jogador[3];
 		mao = 0;
 	}
 	
@@ -51,6 +52,7 @@ public class Mesa implements Runnable {
 		return null;
 	}
 	
+	// Remove o jogador que cancelou e atualiza os demais membros da sala o ocorrido
 	public void removeJogador(String nome) {
 		for(int i = 0; i < jogadores.size(); i++) {
 			if(jogadores.get(i).getNome().equals(nome))
@@ -59,12 +61,15 @@ public class Mesa implements Runnable {
 		broadcastWaitingMessage();
 	}
 	
+	// Envia para todos os jogadores de quem eh a vez
 	private void broadcastChangeTurn(String name) {
+		System.out.println("Agora é vez do: " + name);
 		for(Jogador j : jogadores) {
 			j.sendTurn(name);
 		}
 	}
 	
+	// Envia mensagem de chat para todos os clientes
 	public void broadcastChatMessage(String message) {
 		for(Jogador j : jogadores) {
 			j.sendMessage(Messages.CHAT);
@@ -73,6 +78,8 @@ public class Mesa implements Runnable {
 		}
 	}
 	
+	// Envia mensagem de quantos jogadores ainda faltam para a mesa estar completa
+	// Se a mesa foi completa, envia a mensagem de start game
 	public void broadcastWaitingMessage() {
 		int num = getNumPlayers();
 		
@@ -87,6 +94,7 @@ public class Mesa implements Runnable {
 				j.sendMessage(Messages.START_GAME);
 				j.sendMessage(names);
 				
+				// Welcome message
 				j.sendMessage(Messages.CHAT);
 				j.sendMessage("SERVER - INICIANDO JOGO");
 				j.sendMessage(Messages.PUBLIC);
@@ -113,6 +121,7 @@ public class Mesa implements Runnable {
 		}
 		
 		jogadores.add(jogador);
+		jogadorPorTime.put(jogador, jogadores.size() % 2 == 0 ? TIME1 : TIME2);
 		
 		return true;
 	}
@@ -127,7 +136,7 @@ public class Mesa implements Runnable {
 			baralho = new Baralho();
 			baralho.embaralhar();
 
-			comecarMao();
+			comecarPartida();
 		//}
 
 		/*if (pontuacaoJogoTime1 == 12)
@@ -136,8 +145,16 @@ public class Mesa implements Runnable {
 			System.out.println("Time 2 ganhou!");*/
 	}
 
-	private void comecarMao() {
+	// Inicio a partida, distribuindo as cartas e iniciando o turno 
+	private void comecarPartida() {
 
+		try {
+			ApplicationController.getInstance().logData("Iniciando partida..." + mao);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		mao++;
 		premioMao = 1;
 
@@ -152,7 +169,7 @@ public class Mesa implements Runnable {
 
 		//while (rodada < 3) {
 
-			rodada++;
+			//rodada++;
 			System.out.println("Rodada " + rodada);
 			comecarTurno();
 		//}
@@ -168,6 +185,7 @@ public class Mesa implements Runnable {
 		}*/
 	}
 	
+	// Jogada realizada pelo cliente
 	public void jogada(String playerName, String carta) {
 		Jogador jogadorJogada = getJogadorByName(playerName);
 		Carta c = jogadorJogada.removeCarta(carta);
@@ -178,17 +196,126 @@ public class Mesa implements Runnable {
 			return;
 		}
 		
+		// acumulo a jogada no deck do dealer, pra poder ver depois quem foi a carta vencedora
 		fullJogada[i] = c;
 		
 		for(Jogador j : jogadores) {
 			j.sendDealer(jogadorJogada.getNome(), c.translateCard());	
 		}
 		
-		comecarTurno();
+		// Se foi o ultimo jogador, termina a rodada. Caso contrario, inicia um novo turno 
+		if(i == 3) {
+			terminaRodada();
+		} else {
+			comecarTurno();	
+		}
+	}
+	
+	// Termino a rodada, e ja vejo quem foi o vencedor
+	public void terminaRodada() {
+		Jogador jogadorMaiorCarta = null;
+		Carta maiorCarta = null;
+		boolean melado = false;
+		
+		jogadorMaiorCarta = jogadores.get(0);
+		maiorCarta = fullJogada[0];
+		
+		for(int i = 1; i < MAX_MESA; i++) {
+			int resultado = compararCarta(maiorCarta, fullJogada[i]);
+			
+			if(resultado == MAIOR) {
+				maiorCarta = fullJogada[i];
+				jogadorMaiorCarta = jogadores.get(i);
+			} else if(resultado == MELOU) {
+				melado = true;
+			}
+		}
+
+		// Faco a adicao na pontuacao dos times
+		if (melado) {
+			System.out.println("Melou cocho");
+			pontuacaoMaoTime1++;
+			pontuacaoMaoTime2++;
+		} else {
+			if (jogadorPorTime.get(jogadorMaiorCarta) == TIME1) {
+				System.out.println("Deu time 1!");
+				pontuacaoMaoTime1++;
+			} else {
+				System.out.println("Deu time 2!");
+				pontuacaoMaoTime2++;
+			}
+		}
+		
+		rodada++;
+		
+		// zero o deck do dealer
+		for(int i = 0; i < MAX_MESA; i++) {
+			fullJogada[i] = null;
+		}
+		
+		if((pontuacaoMaoTime1 == 2 && pontuacaoMaoTime2 < 2) || (pontuacaoMaoTime2 == 2 && pontuacaoMaoTime1 < 2) || rodada == 3) {
+			terminaPartida();
+		} else {
+			comecarTurno();
+		}
 		
 	}
 
-	public void comecarTurno() {
+	// Envio a todos os clientes para zerar o dealer
+	private void broadcastClearDealer() {
+		for(Jogador j : jogadores) {
+			j.sendMessage(Messages.CLEAR_DEALER);
+		}
+	}
+	
+	// Encerro a partida e vejo se o jogo ja pode ser encerrado
+	private void terminaPartida() {
+		if(pontuacaoMaoTime1 > pontuacaoMaoTime2) {
+			pontuacaoJogoTime1 += premioMao;
+		} else if(pontuacaoMaoTime1 < pontuacaoMaoTime2) {
+			pontuacaoJogoTime2 += premioMao;
+		} 
+		
+		// Envio o score do jogo atualizado aos jogadores
+		atualizaScoreJogadores();
+		
+		if(pontuacaoJogoTime1 >= 12) {
+			terminaJogo(TIME1);
+		} else if(pontuacaoJogoTime2 >= 12) {
+			terminaJogo(TIME2);
+		} else {
+			comecarPartida();
+		}
+	}
+
+	// Faz broadcast do score pros jogadores
+	private void atualizaScoreJogadores() {
+		for(Jogador j : jogadores) {
+			j.sendMessage(Messages.SCORE);
+			j.sendMessage(String.valueOf(pontuacaoJogoTime1));
+			j.sendMessage(String.valueOf(pontuacaoJogoTime2));
+		}
+	}
+	
+	public void terminaJogo(int vencedor) {
+		// TODO send end game message
+	}
+	
+	public void truco() {
+		if(premioMao == 1)
+		{
+			premioMao = 3;
+		} else {
+			premioMao += 3;
+		}
+		
+		if(premioMao > 12)
+			premioMao = 12;
+	}
+	
+
+	// Ja aviso ao cliente quem pode fazer a proxima jogada
+	private void comecarTurno() {
 
 		/*Jogador jogadorMaiorCarta = null, proximoJogador = null;
 		Carta maiorCarta = null, tempCarta = null;
@@ -242,6 +369,7 @@ public class Mesa implements Runnable {
 		//System.out.println(melado + " - " + maiorCarta);
 	}
 
+	// Retorna o valor sempre baseado na primeira carta
 	public int compararCarta(Carta primeiraCarta, Carta segundaCarta) {
 
 		int rankingVira = vira.getValor().getRanking();
@@ -303,10 +431,17 @@ public class Mesa implements Runnable {
 
 	// retorna proximo jogador da mesa
 	private Jogador proximoJogador() {
-		if(currentPlayer == 4)
+		if(currentPlayer == 4) {
+			// Envio o clear aqui pois o cliente precisa ver a ultima carta jogada
+			System.out.println("Ultimo jogador");
+			broadcastClearDealer();
 			currentPlayer = 0;
+		}
 		
-		return jogadores.get(currentPlayer++);
+		Jogador j = jogadores.get(currentPlayer);
+		currentPlayer++;
+
+		return j;
 	}
 
 	@Override

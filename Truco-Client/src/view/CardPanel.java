@@ -63,6 +63,10 @@ public class CardPanel extends JPanel{
 		}
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		// TODO Auto-generated method stub
