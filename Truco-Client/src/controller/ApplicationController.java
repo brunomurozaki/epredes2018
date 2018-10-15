@@ -177,6 +177,15 @@ public class ApplicationController {
 		gameWindow.changeTurn(name);
 	}
 	
+	public void askTruco(String playerName) {
+		try {
+			Communication.getInstance().sendTrucoMessage(playerName);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void play(String cardName) {
 		System.out.println("Im gonna play " + cardName);
 		

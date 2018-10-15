@@ -25,6 +25,7 @@ public class Messages {
 	
 	public final static String DRAW_CARD = "draw";
 	public final static String DRAW_VIRA = "draw_vira";
+	public final static String TRUCO = "truco";
 	
 	public final static String ACK = "ack";
 	public final static String NOK = "nok";

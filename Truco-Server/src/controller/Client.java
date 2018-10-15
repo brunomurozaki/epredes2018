@@ -105,6 +105,10 @@ public class Client implements Runnable {
 					String cardName = reader.readLine();
 					String playerName = reader.readLine();
 					ApplicationController.getInstance().play(cardName, playerName);
+				} else if(message.equals(Messages.TRUCO)) {
+					String playerName = reader.readLine();
+					
+					ApplicationController.getInstance().askTruco(playerName);
 				}
 				
 				//System.out.println(message);

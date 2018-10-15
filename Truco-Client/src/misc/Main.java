@@ -18,13 +18,5 @@ public class Main {
 		}
 		
 		ApplicationController.getInstance().startApp();
-	}
-
-	/*
-	 * TODO: 
-	 * - Truco
-	 * - Mensagem de fim de jogo
-	 * - ini
-	 * */
-	
+	}	
 }

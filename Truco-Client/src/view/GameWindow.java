@@ -47,6 +47,8 @@ public class GameWindow extends JFrame {
 	
 	public boolean canPlay;
 	
+	public JButton trucoButton;
+	
 	public GameWindow(String names, String myName) {
 		this.names = names;
 		this.myName = myName;
@@ -107,6 +109,13 @@ public class GameWindow extends JFrame {
 			}
 		});
 		
+		this.trucoButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//ApplicationController.getInstance().askTruco(myName);
+			}
+		});
 		
 	}
 	
@@ -144,6 +153,10 @@ public class GameWindow extends JFrame {
 		this.scorePanel = new ScorePanel();
 		this.scorePanel.setLocation(480, 0);
 		
+		this.trucoButton = new JButton("Truco!");
+		this.trucoButton.setSize(100, 30);
+		this.trucoButton.setLocation(0, 510);
+		
 		//CardPanel panel = new CardPanel("10C");
 		//this.setLocation(0, 0);
 		
@@ -154,6 +167,7 @@ public class GameWindow extends JFrame {
 		
 		
 		this.gamePane.add(scorePanel);
+		//this.gamePane.add(this.trucoButton);
 
 		this.startGame();
 	}
@@ -199,10 +213,12 @@ public class GameWindow extends JFrame {
 	
 	public void changeTurn(String name) {
 		scorePanel.changeTurn(name);
-		if(this.myName.equals(name))
+		if(this.myName.equals(name)) 
 			this.canPlay = true;
 		else 
 			this.canPlay = false;
+		
+		this.trucoButton.setEnabled(this.canPlay);
 	}
 	
 	public void updateScore(String score1, String score2) {

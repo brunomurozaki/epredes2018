@@ -52,6 +52,10 @@ public class ApplicationController {
 		LobbyController.getInstance().getMesaByName(playerName).jogada(playerName, cardName);
 	}
 	
+	public void askTruco(String playerName) {
+		LobbyController.getInstance().getMesaByName(playerName).askTruco(playerName);
+	}
+	
 	public static ApplicationController getInstance() throws IOException {
 		if(instance == null)
 			instance = new ApplicationController();

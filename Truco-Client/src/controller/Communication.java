@@ -38,6 +38,12 @@ public class Communication {
 		startListeningMessages();
 	}
 
+	// Envia uma mensagem de truco pro servidor
+	public void sendTrucoMessage(String playerName) {
+		sendMessage(Messages.TRUCO);
+		sendMessage(playerName);
+	}
+	
 	// Envia a mensagem de jogada iniciada ao servidor
 	public void sendPlayMessage(String cardName, String name) {
 		sendMessage(Messages.PLAY);

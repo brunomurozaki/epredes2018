@@ -26,10 +26,13 @@ public class Mesa implements Runnable {
 	private Carta[] fullJogada;
 	private Jogador[] vencedorPorRodada;
 	
+	private boolean [] respostaTruco;
+	
 	public Mesa() {
 		jogadores = new ArrayList<>();
 		jogadorPorTime = new HashMap<>();
 		fullJogada = new Carta[MAX_MESA];
+		respostaTruco = new boolean[MAX_MESA];
 		vencedorPorRodada = new Jogador[3];
 		mao = 0;
 	}
@@ -301,6 +304,16 @@ public class Mesa implements Runnable {
 		// TODO send end game message
 	}
 	
+	public void askTruco(String playerName) {
+	
+		for(Jogador j : jogadores) {
+			if(j.getNome().equals(playerName))
+				continue;
+			
+		}
+		
+	}
+	
 	public void truco() {
 		if(premioMao == 1)
 		{
@@ -316,57 +329,8 @@ public class Mesa implements Runnable {
 
 	// Ja aviso ao cliente quem pode fazer a proxima jogada
 	private void comecarTurno() {
-
-		/*Jogador jogadorMaiorCarta = null, proximoJogador = null;
-		Carta maiorCarta = null, tempCarta = null;
-		boolean melado = false;*/
-		
 		jogadorCorrente = proximoJogador();
 		broadcastChangeTurn(jogadorCorrente.getNome());
-
-		/*for (int i = 0; i < jogadores.size(); i++) {
-
-			// vez do jogador
-			proximoJogador = proximoJogador();
-			broadcastChangeTurn(proximoJogador.getNome());
-			
-			System.out.println("Vez do " + proximoJogador.getNome());
-			System.out.println(proximoJogador.getCartas() + "\n");
-			
-			
-			
-			
-			tempCarta = proximoJogador.removeCarta(null);
-
-			if (maiorCarta == null) {
-				maiorCarta = tempCarta;
-				jogadorMaiorCarta = proximoJogador;
-			} else {
-				int resultado = compararCarta(tempCarta, maiorCarta);
-
-				if (resultado == MENOR) {
-					melado = false;
-					maiorCarta = tempCarta;
-					jogadorMaiorCarta = proximoJogador;
-				} else if (resultado == MELOU) {
-					melado = true;
-					jogadorMaiorCarta = proximoJogador;
-				}
-			}
-		}
-
-		if (melado) {
-			pontuacaoMaoTime1++;
-			pontuacaoMaoTime2++;
-		} else {
-			if (jogadorPorTime.get(jogadorMaiorCarta) == TIME1) {
-				pontuacaoMaoTime1++;
-			} else {
-				pontuacaoMaoTime2++;
-			}
-		}*/
-
-		//System.out.println(melado + " - " + maiorCarta);
 	}
 
 	// Retorna o valor sempre baseado na primeira carta
