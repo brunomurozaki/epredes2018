@@ -31,10 +31,18 @@ public class DeckPanel extends JPanel{
 		if(cardMap.get(name) != null) {
 			return;
 		}
+
+		boolean isDefault = false;
 		
-		CardPanel panel = new CardPanel(name);
+		if(name.equals("red_back")) {
+			isDefault = true;
+			name += cardMap.keySet().size();
+		}
+		
+		CardPanel panel = new CardPanel(name, isDefault);
 		panel.setLocation(cardMap.keySet().size() * 60, 30);
 		this.add(panel);
+		this.repaint();
 		
 		cardMap.put(name, panel);
 	}
@@ -50,9 +58,9 @@ public class DeckPanel extends JPanel{
 		this.add(labelName);
 		
 		// Remover isso depois
-		this.addCard("10C");
-		this.addCard("10D");
-		this.addCard("7D");
+//		this.addCard("10C");
+//		this.addCard("10D");
+//		this.addCard("7D");
 	}
 	
 	

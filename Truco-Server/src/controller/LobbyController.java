@@ -8,10 +8,12 @@ public class LobbyController {
 
 	private static LobbyController instance;
 	private ArrayList<Mesa> gameList;
+	private ArrayList<Thread> gameThread;
 	
 	
 	public LobbyController() {
 		gameList = new ArrayList<>();
+		gameThread = new ArrayList<>();
 	}
 	
 	public void removeJogador(String name) {
@@ -44,6 +46,13 @@ public class LobbyController {
 			
 			m.addJogador(jogador);
 			m.broadcastWaitingMessage();
+			
+			if(m.mesaFull()) {
+				Thread t = new Thread(m);
+				gameThread.add(t);
+				t.start();
+			}
+			
 			return m.getNumPlayers();
 		}
 		

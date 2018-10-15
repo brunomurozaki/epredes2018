@@ -26,6 +26,14 @@ public class Carta {
 	public void setValor(Valor valor) {
 		this.valor = valor;
 	}
+	
+	public String translateCard() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(valor.getTranslatedCard());
+		builder.append(naipe.getNaipeChar());
+		
+		return builder.toString();
+	}
 
 	@Override
 	public String toString() {

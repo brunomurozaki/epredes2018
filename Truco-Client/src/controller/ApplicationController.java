@@ -122,7 +122,14 @@ public class ApplicationController {
 		}
 	}
 	
-	
+	public void drawCard(String card) {
+		if(gameWindow == null) {
+			System.err.println("There is no game to draw a card");
+			return;
+		}
+		
+		gameWindow.drawCard(card);
+	}
 	
 	public void updateOnlineList(String list) {
 		this.mainWindow.updateOnlineUsersList(list);

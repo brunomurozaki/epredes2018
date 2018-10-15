@@ -1,27 +1,20 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JWindow;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import controller.ApplicationController;
 import util.Messages;
@@ -151,9 +144,8 @@ public class GameWindow extends JFrame {
 		
 		
 		this.gamePane.add(scorePanel);
-		
-		// remover isto depois
-		//this.startGame();
+
+		this.startGame();
 	}
 	
 	public void startGame() {
@@ -164,21 +156,36 @@ public class GameWindow extends JFrame {
 		
 		rightPanel = new DeckPanel(splittedNames[1]);
 		rightPanel.setLocation(380, 210);
+		rightPanel.addCard("red_back");
+		rightPanel.addCard("red_back");
+		rightPanel.addCard("red_back");
 		
-		leftPanel = new DeckPanel(splittedNames[2]);
-		leftPanel.setLocation(0, 210);
-		
-		frontPanel = new DeckPanel(splittedNames[3]);
-		frontPanel.setLocation(190, 0);
+//		leftPanel = new DeckPanel(splittedNames[2]);
+//		leftPanel.setLocation(0, 210);
+//		leftPanel.addCard("red_back_1");
+//		leftPanel.addCard("red_back_2");
+//		leftPanel.addCard("red_back_3");
+//		
+//		frontPanel = new DeckPanel(splittedNames[3]);
+//		frontPanel.setLocation(190, 0);
+//		frontPanel.addCard("red_back_1");
+//		frontPanel.addCard("red_back_2");
+//		frontPanel.addCard("red_back_3");
 		
 		dealerPanel = new DeckPanel("Mesa");
 		dealerPanel.setLocation(190, 210);
 		
 		this.gamePane.add(minePanel);
 		this.gamePane.add(rightPanel);
-		this.gamePane.add(leftPanel);
-		this.gamePane.add(frontPanel);
+		//this.gamePane.add(leftPanel);
+		//this.gamePane.add(frontPanel);
 		this.gamePane.add(dealerPanel);
+	}
+	
+	
+	
+	public void drawCard(String cardName) {
+		minePanel.addCard(cardName);
 	}
 	
 	public void showWindow() {

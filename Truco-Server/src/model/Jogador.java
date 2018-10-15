@@ -1,8 +1,11 @@
 package model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import controller.ApplicationController;
 import controller.Client;
+import util.Messages;
 
 public class Jogador {
 
@@ -17,8 +20,18 @@ public class Jogador {
 	}
 
 	public void recebeCarta(Carta carta) {
-
 		cartas.add(carta);
+		
+		try {
+			ApplicationController.getInstance().logData("Enviando a mensagem de draw");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// Avisa o cliente da carta
+		client.sendMessage(Messages.DRAW_CARD);
+		client.sendMessage(carta.translateCard());
 	}
 
 	public String getNome() {

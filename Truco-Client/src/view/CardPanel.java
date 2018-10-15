@@ -18,10 +18,14 @@ public class CardPanel extends JPanel{
 	private static final int HEIGHT = 90;
 	private String name;
 	
-	public CardPanel(String name) {
+	public CardPanel(String name, boolean defaultCard) {
 		try {
 			this.name = name;
-			image = ImageIO.read(new File("resources/" + name + ".png"));
+			
+			if(defaultCard)
+				image = ImageIO.read(new File("resources/red_back.png"));
+			else
+				image = ImageIO.read(new File("resources/" + name + ".png"));
 			
 			this.setBackground(Color.GREEN);
 			this.setSize(WIDTH, HEIGHT);
@@ -32,6 +36,8 @@ public class CardPanel extends JPanel{
 		}
 		
 		initializeEvents();
+		System.out.println("CardPanel: " + name);
+		
 	}
 	
 	private void initializeEvents() {

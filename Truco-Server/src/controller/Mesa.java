@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -126,7 +127,7 @@ public class Mesa implements Runnable {
 		pontuacaoMaoTime1 = 0;
 		pontuacaoMaoTime2 = 0;
 
-		System.out.println(mao + "ª mão | vale " + premioMao + " ponto | vira: " + vira + " \n");
+		System.out.println(mao + "ª mao | vale " + premioMao + " ponto | vira: " + vira + " \n");
 
 		rodada = 0;
 
@@ -243,7 +244,8 @@ public class Mesa implements Runnable {
 		for (int i = 0; i < 3; i++) {
 
 			for (Jogador jogador : jogadores) {
-				jogador.recebeCarta(baralho.retirarCarta());
+				Carta carta = baralho.retirarCarta();
+				jogador.recebeCarta(carta);
 			}
 		}
 
@@ -260,7 +262,12 @@ public class Mesa implements Runnable {
 
 	@Override
 	public void run() {
-
-		comecarJogo();
+		try {
+			ApplicationController.getInstance().logData("Iniciando um jogo");
+			comecarJogo();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

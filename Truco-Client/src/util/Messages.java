@@ -19,11 +19,13 @@ public class Messages {
 	public final static String TIME = "time";
 	public final static String PLAY = "play";
 	
+	public final static String DRAW_CARD = "draw";
+	
 	public final static String ACK = "ack";
 	public final static String NOK = "nok";
 	
 	public final static String SEND_ONLINE_USERS = "list";
-
+	
 	public final static String PUBLIC = "public";
 	public final static String TEAM = "team";
 }

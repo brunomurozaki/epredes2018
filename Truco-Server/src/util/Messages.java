@@ -19,6 +19,8 @@ public class Messages {
 	public final static String TIME = "time";
 	public final static String PLAY = "play";
 	
+	public final static String DRAW_CARD = "draw";
+	
 	public final static String ACK = "ack";
 	public final static String NOK = "nok";
 	

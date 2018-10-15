@@ -146,6 +146,11 @@ public class Communication {
 						} else if(message.equals(Messages.START_GAME)) {
 							String names = reader.readLine();
 							startGameTreatment(names);
+						} else if(message.equals(Messages.DRAW_CARD)) {
+							System.out.println("drawCard");
+							String card = reader.readLine();
+							System.out.println(card);
+							ApplicationController.getInstance().drawCard(card);
 						} else if (message.equals(Messages.CHAT)) {
 							String res = reader.readLine();
 							System.out.println("Recebi msg");

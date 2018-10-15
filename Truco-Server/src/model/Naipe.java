@@ -14,4 +14,18 @@ public enum Naipe {
 	public int getRanking() {
 		return ranking;
 	}
+	
+	public char getNaipeChar() {
+	
+		switch(ranking) {
+		case 1:
+			return 'D';
+		case 2:
+			return 'S';
+		case 3:
+			return 'H';
+		default:
+			return 'C';
+		}
+	}
 }
