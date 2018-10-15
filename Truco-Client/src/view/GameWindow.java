@@ -7,6 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -31,17 +32,22 @@ public class GameWindow extends JFrame {
 	private JButton sendButton;
 	private ScorePanel scorePanel;
 	
-	private DeckPanel frontPanel;
+	private DeckPanel topPanel;
 	private DeckPanel leftPanel;
 	private DeckPanel rightPanel;
-	private DeckPanel minePanel;
+	private DeckPanel bottomPanel;
 	
 	private DeckPanel dealerPanel;
 	
-	private String names;
+	private ArrayList<DeckPanel> panelList;
 	
-	public GameWindow(String names) {
+	private String names;
+	private String myName;
+	
+	public GameWindow(String names, String myName) {
 		this.names = names;
+		this.myName = myName;
+		this.panelList = new ArrayList<>();
 		initializeComponents();
 		initializeEvents();
 	}
@@ -151,41 +157,50 @@ public class GameWindow extends JFrame {
 	public void startGame() {
 		String[] splittedNames = this.names.split(";");
 		
-		minePanel = new DeckPanel(splittedNames[0]);
-		minePanel.setLocation(190, 410);
+		bottomPanel = new DeckPanel(splittedNames[0]);
+		bottomPanel.setLocation(190, 410);
 		
-		rightPanel = new DeckPanel(splittedNames[1]);
+		leftPanel = new DeckPanel(splittedNames[1]);
+		leftPanel.setLocation(0, 210);
+		
+		topPanel = new DeckPanel(splittedNames[2]);
+		topPanel.setLocation(190, 0);
+		
+		rightPanel = new DeckPanel(splittedNames[3]);
 		rightPanel.setLocation(380, 210);
-		rightPanel.addCard("red_back");
-		rightPanel.addCard("red_back");
-		rightPanel.addCard("red_back");
 		
-//		leftPanel = new DeckPanel(splittedNames[2]);
-//		leftPanel.setLocation(0, 210);
-//		leftPanel.addCard("red_back_1");
-//		leftPanel.addCard("red_back_2");
-//		leftPanel.addCard("red_back_3");
-//		
-//		frontPanel = new DeckPanel(splittedNames[3]);
-//		frontPanel.setLocation(190, 0);
-//		frontPanel.addCard("red_back_1");
-//		frontPanel.addCard("red_back_2");
-//		frontPanel.addCard("red_back_3");
+		this.panelList.add(bottomPanel);
+		this.panelList.add(rightPanel);
+		this.panelList.add(leftPanel);
+		this.panelList.add(topPanel);
 		
 		dealerPanel = new DeckPanel("Mesa");
 		dealerPanel.setLocation(190, 210);
 		
-		this.gamePane.add(minePanel);
+		this.gamePane.add(bottomPanel);
 		this.gamePane.add(rightPanel);
-		//this.gamePane.add(leftPanel);
-		//this.gamePane.add(frontPanel);
+		this.gamePane.add(leftPanel);
+		this.gamePane.add(topPanel);
 		this.gamePane.add(dealerPanel);
 	}
 	
 	
 	
 	public void drawCard(String cardName) {
-		minePanel.addCard(cardName);
+		
+		for(DeckPanel p : panelList) {
+			
+			System.out.println(p.getName());
+			System.out.println(this.myName);
+			
+			if(p.getName().equals(this.myName)) {
+				p.addCard(cardName);
+			} else {
+				p.addCard("red_back");
+			}
+		}
+		
+		
 	}
 	
 	public void showWindow() {

@@ -19,9 +19,8 @@ public class Mesa implements Runnable {
 	private HashMap<Jogador, Integer> jogadorPorTime;
 	private static final int TIME1 = 1, TIME2 = 2;
 	private static final int MAIOR = 1, MENOR = -1, MELOU = 0;
-	private static final int MAX_MESA = 2;
+	private static final int MAX_MESA = 4;
 	private int currentPlayer = 0;
-	private static Chat chat;
 
 	public Mesa() {
 		jogadores = new ArrayList<>();
@@ -135,7 +134,7 @@ public class Mesa implements Runnable {
 
 			rodada++;
 			System.out.println("Rodada " + rodada);
-			comecarRodada();
+			//comecarRodada();
 		}
 
 		if (pontuacaoMaoTime1 == 2)

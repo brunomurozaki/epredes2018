@@ -24,27 +24,27 @@ public class DeckPanel extends JPanel{
 		initializeComponents();
 	}
 	
-	public void addCard(String name) {
+	public void addCard(String cardName) {
 		if(cardMap.keySet().size() == 3)
 			return;
 		
-		if(cardMap.get(name) != null) {
+		if(cardMap.get(cardName) != null) {
 			return;
 		}
 
 		boolean isDefault = false;
 		
-		if(name.equals("red_back")) {
+		if(cardName.equals("red_back")) {
 			isDefault = true;
-			name += cardMap.keySet().size();
+			cardName += cardMap.keySet().size();
 		}
 		
-		CardPanel panel = new CardPanel(name, isDefault);
+		CardPanel panel = new CardPanel(cardName, isDefault);
 		panel.setLocation(cardMap.keySet().size() * 60, 30);
 		this.add(panel);
 		this.repaint();
 		
-		cardMap.put(name, panel);
+		cardMap.put(cardName, panel);
 	}
 	
 	private void initializeComponents(){
@@ -61,6 +61,10 @@ public class DeckPanel extends JPanel{
 //		this.addCard("10C");
 //		this.addCard("10D");
 //		this.addCard("7D");
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	

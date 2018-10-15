@@ -51,8 +51,6 @@ public class Jogador {
 	}
 
 	public Carta removeCarta(Carta carta) {
-		
-		//cartas.remove(carta);
 		return cartas.remove(0);
 	}
 	

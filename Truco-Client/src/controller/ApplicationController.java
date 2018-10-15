@@ -106,7 +106,7 @@ public class ApplicationController {
 			this.waitingWidow = null;	
 		}
 		
-		this.gameWindow = new GameWindow(names);
+		this.gameWindow = new GameWindow(names, clientName);
 		gameWindow.showWindow();
 	}
 	
