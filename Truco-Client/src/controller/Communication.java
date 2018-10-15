@@ -78,12 +78,12 @@ public class Communication {
 	// Escuta as mensagens vindas do servidor
 	private void startListeningMessages() {
 		startTCPListening();
-		startUDPListening();
+		//startUDPListening();
 	}
 
 	// Thread que a cada 100 milisegundos envia um pedido ao Server da lista
 	// por meio de uma mensagem UDP
-	private void startUDPListening() {
+	public void startUDPListening() {
 		if (askForListThread != null) {
 			System.err.println("Thread UDP de receber mensagens ja iniciada");
 			return;

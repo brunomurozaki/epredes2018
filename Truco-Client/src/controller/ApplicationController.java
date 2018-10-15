@@ -39,7 +39,13 @@ public class ApplicationController {
 	}
 	
 	public void successfulLogin() {
-		startMainWindow();
+		try {
+			Communication.getInstance().startUDPListening();
+			startMainWindow();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void receiveChatMessage(String msg, String type) {

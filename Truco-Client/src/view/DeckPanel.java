@@ -73,14 +73,8 @@ public class DeckPanel extends JPanel {
 	}
 
 	public void clearPanel() {
-
-		Iterator<CardPanel> setIt = cardMap.values().iterator(); 
-		
-		while(setIt.hasNext()) {
-			this.remove(setIt.next());
-		}
-		
 		cardMap.clear();
+		this.removeAll();
 		this.repaint();
 	}
 
@@ -93,6 +87,8 @@ public class DeckPanel extends JPanel {
 		this.labelName = new JLabel("<html><b>" + this.name + "<b></html>");
 		this.labelName.setSize(150, 30);
 		this.add(labelName);
+		
+		this.repaint();
 
 	}
 

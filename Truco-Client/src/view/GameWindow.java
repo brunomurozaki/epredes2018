@@ -208,6 +208,11 @@ public class GameWindow extends JFrame {
 	public void updateScore(String score1, String score2) {
 		scorePanel.changeScore(score1, 1);
 		scorePanel.changeScore(score2, 2);
+		
+		bottomPanel.clearPanel();
+		topPanel.clearPanel();
+		rightPanel.clearPanel();
+		leftPanel.clearPanel();
 	}
 	
 	public void clearDealer() {
